@@ -39,8 +39,14 @@ namespace Kalender.View.Sections.Main.ViewModels
             DeleteCommand = new CommandBase<object>(DeleteAppointment);
         }
 
+        /// <summary>
+        /// Der derzeitig Ausgweählte Termin
+        /// </summary>
         public Appointment SelectedAppointment { get => AppointmentData.SelectedAppointment; set => AppointmentData.SelectedAppointment = value; }
         
+        /// <summary>
+        /// Die Termine für den Ausgewählten Tag
+        /// </summary>
         public ObservableCollection<Appointment> DayAppointments
         {
             get => new ObservableCollection<Appointment>(Appointments.Where(x => x.Date.Day == CurrentDate.Day));

@@ -1,15 +1,29 @@
-﻿<UserControl x:Class="Kalender.View.Controls.AppointmentBar"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Kalender.View.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" x:Name="usc_AppointmentBar">
-    <Border CornerRadius="2" Background="{Binding AppointmentColor}">
-        <DockPanel Background="Transparent" Margin="2">
-            <TextBlock Text="{Binding DateStart.Hour}" DockPanel.Dock="Left" HorizontalAlignment="Left"/>
-            <TextBlock Text="{Binding Title}" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="5 0 0 0"/>
-        </DockPanel>  
+﻿<UserControl
+    x:Class="Kalender.View.Controls.AppointmentBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kalender.View.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="usc_AppointmentBar"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    MouseLeftButtonDown="usc_AppointmentBar_MouseLeftButtonDown">
+    <Border CornerRadius="5" x:Name="brd_Bar" BorderThickness="2">
+        <Border.Background>
+            <SolidColorBrush Color="{Binding AppointmentColor}"/>
+        </Border.Background>
+        <DockPanel Margin="2" Background="Transparent">
+            <TextBlock
+                HorizontalAlignment="Left"
+                DockPanel.Dock="Left"
+                Text="{Binding DateStart.Hour}" />
+            <TextBlock
+                Margin="5,0,0,0"
+                HorizontalAlignment="Left"
+                DockPanel.Dock="Left"
+                Text="{Binding Title}" />
+        </DockPanel>
     </Border>
 </UserControl>

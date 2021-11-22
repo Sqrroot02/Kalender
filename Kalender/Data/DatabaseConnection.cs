@@ -23,6 +23,9 @@ namespace Kalender.Data
         private static MySqlConnection _connection = new MySqlConnection();
         public static MySqlConnection Connection { get => _connection; private set => _connection = value; }
 
+        /// <summary>
+        /// Erstellt eine MySQL Verbindung
+        /// </summary>
         public static void CreateConnection()
         {
             string connectionString = $@"host={Host};user={UserName};password={Password};port={Port};database={Database};SSL Mode={SSLMode}";
@@ -30,7 +33,7 @@ namespace Kalender.Data
         }
 
         /// <summary>
-        /// 
+        /// Verbindet sich mit der Datebank
         /// </summary>
         public static void Connect()
         {
@@ -62,6 +65,9 @@ namespace Kalender.Data
             }
         }
 
+        /// <summary>
+        /// Initialisiert die Datenbank mit allen Tabellen bei der ersten ausführung
+        /// </summary>
         public static void InitDatabase()
         {
             MySqlCommand command = new MySqlCommand();

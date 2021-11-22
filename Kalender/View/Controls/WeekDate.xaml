@@ -12,13 +12,13 @@
     <Border
         x:Name="brd_WeekDateBorder"
         Margin="1"
-        CornerRadius="2"
         Background="White"
         BorderBrush="Gray"
-        BorderThickness="2,2,2,2">
+        BorderThickness="2,2,2,2"
+        CornerRadius="2">
         <Border.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
-                <BeginStoryboard> 
+                <BeginStoryboard>
                     <Storyboard>
                         <ColorAnimation
                             Storyboard.TargetName="brd_WeekDateBorder"
@@ -60,13 +60,13 @@
             <ListBox
                 x:Name="lib_Appointments"
                 VerticalAlignment="Stretch"
-                Background="Transparent"     
-                SelectionChanged="lib_Appointments_SelectionChanged"
-                GotFocus="lib_Appointments_GotFocus"
+                Background="Transparent"
                 BorderThickness="0"
                 DockPanel.Dock="Top"
+                GotFocus="lib_Appointments_GotFocus"
+                ItemsSource="{Binding Appointments}"
                 SelectedItem="{Binding SelectedAppointment}"
-                ItemsSource="{Binding Appointments}">
+                SelectionChanged="lib_Appointments_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Transparent" CornerRadius="2">
@@ -74,12 +74,10 @@
                                 <SolidColorBrush Color="{Binding AppointmentColor}" />
                             </Border.Background>
                             <DockPanel>
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    DockPanel.Dock="Left">
-                                    <Run Text="{Binding HourStart}"/>
-                                    <Run Text=":"/>
-                                    <Run Text="{Binding MinuteStart}"/>
+                                <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
+                                    <Run Text="{Binding HourStart}" />
+                                    <Run Text=":" />
+                                    <Run Text="{Binding MinuteStart}" />
                                 </TextBlock>
                                 <TextBlock
                                     Margin="5,0,0,0"

@@ -1,0 +1,25 @@
+﻿<Page x:Class="Kalender.View.Sections.CalenderViews.DayView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Kalender.View.Sections.CalenderViews"
+      xmlns:controls="clr-namespace:Kalender.View.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DayView">
+
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Height="30">
+            <TextBlock DockPanel.Dock="Left" Text="Year: " Margin="3"/>
+            <TextBox Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
+            <TextBlock DockPanel.Dock="Left" Text="Month: " Margin="3"/>
+            <TextBox Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
+            <TextBlock DockPanel.Dock="Left" Text="Day: " Margin="3"/>
+            <TextBox Text="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
+        </DockPanel>
+        <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Visible">
+            <controls:DayCalender Day="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Month="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Year="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"/>
+        </ScrollViewer>
+    </DockPanel>
+</Page>

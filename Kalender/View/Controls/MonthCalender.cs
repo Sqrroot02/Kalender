@@ -50,8 +50,7 @@ namespace Kalender.View.Controls
             monthCalender.DateChanged();
         }
         protected virtual void DateChanged()
-        {
-            
+        {            
             if (Year != 0 && Month != 0)
             {
                 AppointmentData.Appointments = new ObservableCollection<Appointment>(appointmentData.GetAppointmentsByDate(Year, Month));  

@@ -14,6 +14,9 @@ namespace Kalender.Data
 {
     public sealed class AppointmentData : DataBase<Appointment>
     {
+        /// <summary>
+        /// Event für das neu auswählen eines Termines
+        /// </summary>
         public static event EventHandler<Appointment>? OnSelectedAppointmentChanged;
 
         MySqlCommand _command = new MySqlCommand();
@@ -37,6 +40,9 @@ namespace Kalender.Data
             _command.Connection = DatabaseConnection.Connection;
         }
 
+        /// <summary>
+        /// Initialisiert die Tabelle "Appointment"
+        /// </summary>
         public static void InitTables()
         {
             MySqlCommand mySqlCommand = new MySqlCommand();
@@ -52,6 +58,10 @@ namespace Kalender.Data
             mySqlCommand.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Löscht ein Termin aus der Appointment Tabelle
+        /// </summary>
+        /// <param name="item"></param>
         public override void DeleteItem(Appointment item)
         {
             string sql = @"DELETE FROM appointment WHERE appointmentId=@aid";
@@ -76,6 +86,10 @@ namespace Kalender.Data
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Fügt einen neuen Termin hinzu
+        /// </summary>
+        /// <param name="item"></param>
         public override void InsertItem(Appointment item)
         {
             string sql = @"INSERT INTO appointment (appointmentId,Place,Title,Date,WholeDay,Description,HourStart,HourEnd,MinuteStart,MinuteEnd) VALUES (@aidappointment, @aplace,@atitle,@adatestart,@awholeday,@adescription,@ahourend,@ahourstart,@aminstart, @aminend)";
@@ -101,6 +115,10 @@ namespace Kalender.Data
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Aktualisiert einen Termin
+        /// </summary>
+        /// <param name="item"></param>
         public override void UpdateItem(Appointment item)
         {
             string sql = @"UPDATE appointment SET Place=@aplace,Title=@atitle,Date=@adatestart,WholeDay=@awholeday,Description=@adescription,HourStart=@ahstart,HourEnd=@ahend,MinuteStart=@amstart,MinuteEnd=@amend WHERE appointmentId=@aidappointment";
@@ -121,6 +139,11 @@ namespace Kalender.Data
             _command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Mappt einen Termin aus der Relationalen Datenbank zum objektorientierten Schema
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public List<Appointment> MapAppointments(DataTable dt)
         {
             List<Appointment> list = new List<Appointment>();
@@ -159,6 +182,33 @@ namespace Kalender.Data
 
             _command.Parameters.Add((new MySqlParameter("ayear", year)));
             _command.Parameters.Add((new MySqlParameter("amonth", month)));
+
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter())
+            {
+                adapter.SelectCommand = _command;
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                list = MapAppointments(dt);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Gibt alle Termine nach einem ausgewähltem Datum wieder
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        public List<Appointment> GetAppointmentsByDate(int year, int month, int day)
+        {
+            List<Appointment> list = new List<Appointment>();
+            string sql = @"SELECT * FROM appointment WHERE YEAR(Date)=@ayear AND MONTH(Date)=@amonth AND DAY(DATE)=@aday";
+            _command.CommandText = sql;
+            _command.Parameters.Clear();
+
+            _command.Parameters.Add((new MySqlParameter("ayear", year)));
+            _command.Parameters.Add((new MySqlParameter("amonth", month)));
+            _command.Parameters.Add((new MySqlParameter("aday", day)));
 
             using (MySqlDataAdapter adapter = new MySqlDataAdapter())
             {

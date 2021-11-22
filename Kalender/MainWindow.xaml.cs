@@ -30,7 +30,8 @@ namespace Kalender
             InitializeComponent();
             AppointmentConfigurationVM = new AppointmentConfiguration_VM();
             MonthView monthView = new MonthView();
-            frm_CalenderView.Content = monthView;
+            DayView dayView = new DayView();
+            frm_CalenderView.Content = dayView;
             dop_AppointmentPanel.DataContext = AppointmentConfigurationVM;
         }
     }
