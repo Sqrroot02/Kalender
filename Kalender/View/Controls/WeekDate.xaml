@@ -1,0 +1,96 @@
+﻿<UserControl
+    x:Class="Kalender.View.Controls.WeekDate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kalender.View.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="usc_WeekDate"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Border
+        x:Name="brd_WeekDateBorder"
+        Margin="1"
+        CornerRadius="2"
+        Background="White"
+        BorderBrush="Gray"
+        BorderThickness="2,2,2,2">
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard> 
+                    <Storyboard>
+                        <ColorAnimation
+                            Storyboard.TargetName="brd_WeekDateBorder"
+                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                            From="White"
+                            To="LightGray"
+                            Duration="00:00:0.1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation
+                            Storyboard.TargetName="brd_WeekDateBorder"
+                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                            From="LightGray"
+                            To="White"
+                            Duration="00:00:0.1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
+        <DockPanel Margin="3">
+            <!--  Indikator ob dieser Tag heute ist  -->
+            <Rectangle
+                Height="5"
+                VerticalAlignment="Top"
+                DockPanel.Dock="Top"
+                Fill="PaleGreen"
+                Visibility="{Binding IsTodayVisible}" />
+            <!--  Anzeige des Monatsindexes  -->
+            <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                DockPanel.Dock="Top"
+                Text="{Binding CurrentDate.Day}" />
+            <!--  Liste mit Terminen an diesem Tag  -->
+            <ListBox
+                x:Name="lib_Appointments"
+                VerticalAlignment="Stretch"
+                Background="Transparent"     
+                SelectionChanged="lib_Appointments_SelectionChanged"
+                GotFocus="lib_Appointments_GotFocus"
+                BorderThickness="0"
+                DockPanel.Dock="Top"
+                SelectedItem="{Binding SelectedAppointment}"
+                ItemsSource="{Binding Appointments}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Transparent" CornerRadius="2">
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding AppointmentColor}" />
+                            </Border.Background>
+                            <DockPanel>
+                                <TextBlock
+                                    HorizontalAlignment="Left"
+                                    DockPanel.Dock="Left">
+                                    <Run Text="{Binding HourStart}"/>
+                                    <Run Text=":"/>
+                                    <Run Text="{Binding MinuteStart}"/>
+                                </TextBlock>
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    DockPanel.Dock="Left"
+                                    Text="{Binding Title}" />
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </Border>
+</UserControl>
