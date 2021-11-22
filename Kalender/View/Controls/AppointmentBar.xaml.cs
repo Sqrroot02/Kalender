@@ -1,20 +1,9 @@
 ﻿using Kalender.Data;
 using Kalender.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Kalender.View.Controls
 {
@@ -26,17 +15,16 @@ namespace Kalender.View.Controls
         public AppointmentBar(Appointment appointment)
         {
             InitializeComponent();
+
             Appointment = appointment;
             DataContext = Appointment;
+
             AppointmentData.OnSelectedAppointmentChanged += AppointmentData_OnSelectedAppointmentChanged;
             AppointmentData.Appointments.CollectionChanged += Appointments_CollectionChanged;
         }
 
-        private void Appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
+        private void Appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) =>
             NotifyPropertyChanged(nameof(Appointment));
-
-        }
 
         private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)
         {
@@ -49,10 +37,8 @@ namespace Kalender.View.Controls
         private Appointment _appointment = null;
         public Appointment Appointment { get => _appointment; set { _appointment = value; NotifyPropertyChanged(nameof(Appointment)); } }
 
-        private void usc_AppointmentBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
+        private void usc_AppointmentBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
             AppointmentData.SelectedAppointment = Appointment;
-        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -64,6 +50,5 @@ namespace Kalender.View.Controls
                 handler(this, new PropertyChangedEventArgs(propName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-
     }
 }

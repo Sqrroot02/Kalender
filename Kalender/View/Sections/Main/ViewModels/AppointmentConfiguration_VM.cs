@@ -7,9 +7,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Kalender.View.Sections.Main.ViewModels
 {
+    /// <summary>
+    /// ViewModel für das Termin-Bearbeitungs Panel
+    /// </summary>
     public class AppointmentConfiguration_VM : ViewModelBase
     {
         private readonly AppointmentData _appointmentData = new AppointmentData();
@@ -19,18 +23,22 @@ namespace Kalender.View.Sections.Main.ViewModels
             AppointmentData.OnSelectedAppointmentChanged += AppointmentData_OnSelectedAppointmentChanged;
             CalendarData.SelectedDateChanged += CalendarData_SelectedDateChanged;
             InitCommand();
-            SelectedAppointment = new Appointment();
         }
 
         private void CalendarData_SelectedDateChanged(object? sender, DateTime e)
         {
-            NotifyPropertyChanged(nameof(DayAppointments));
+            NotifyPropertyChanged(nameof(DayAppointments));            
         }
 
-        private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)
+        private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)        
         {
             NotifyPropertyChanged(nameof(SelectedAppointment));
+            if (AppointmentData.SelectedAppointment != null)
+                AppointmentOptionVisibility = Visibility.Visible;
+            else
+                AppointmentOptionVisibility = Visibility.Collapsed;
         }
+            
 
         public override void InitCommand()
         {
@@ -44,13 +52,13 @@ namespace Kalender.View.Sections.Main.ViewModels
         /// </summary>
         public Appointment SelectedAppointment { get => AppointmentData.SelectedAppointment; set => AppointmentData.SelectedAppointment = value; }
         
+        private Visibility _appointmentOptionsVisibility = Visibility.Collapsed;
+        public Visibility AppointmentOptionVisibility { get => _appointmentOptionsVisibility; set { _appointmentOptionsVisibility = value; NotifyPropertyChanged(nameof(AppointmentOptionVisibility)); } }
+
         /// <summary>
         /// Die Termine für den Ausgewählten Tag
         /// </summary>
-        public ObservableCollection<Appointment> DayAppointments
-        {
-            get => new ObservableCollection<Appointment>(Appointments.Where(x => x.Date.Day == CurrentDate.Day));
-        }
+        public ObservableCollection<Appointment> DayAppointments { get => new ObservableCollection<Appointment>(AppointmentData.Appointments.Where(x => x.Date.Day == CurrentDate.Day && x.Date.Month == CurrentDate.Month && x.Date.Year == CurrentDate.Year)); }
 
         public CommandBase<object> DeleteCommand { get; set; }
         public CommandBase<object> ApplyCommand { get; set; }
@@ -59,6 +67,10 @@ namespace Kalender.View.Sections.Main.ViewModels
         private DateTime _currentDate = DateTime.Now;
         public DateTime CurrentDate { get => CalendarData.SelectedDate; }
 
+        /// <summary>
+        /// Fügt einen neuen Termin hinzu
+        /// </summary>
+        /// <param name="obj"></param>
         public void AddNewAppointment(object obj)
         {
             Appointment appointment = new Appointment()
@@ -75,15 +87,25 @@ namespace Kalender.View.Sections.Main.ViewModels
             NotifyPropertyChanged(nameof(DayAppointments));
         }
 
+        /// <summary>
+        /// Aktualisiert ein Termin
+        /// </summary>
+        /// <param name="obj"></param>
         public void UpdateAppointment(object obj)
         {
             _appointmentData.UpdateItem(SelectedAppointment);
+            AppointmentData.Appointments.Remove(SelectedAppointment);
+            AppointmentData.Appointments.Add(SelectedAppointment);
         }
 
+        /// <summary>
+        /// Entfernt ein Termin
+        /// </summary>
+        /// <param name="obj"></param>
         public void DeleteAppointment(object obj)
         {
             _appointmentData.DeleteItem(SelectedAppointment);
-            Appointments.Remove(SelectedAppointment);   
+            AppointmentData.Appointments.Remove(SelectedAppointment);   
             SelectedAppointment=null;
         }
     }

@@ -56,9 +56,7 @@ namespace Kalender.View.Controls
         {
             CalendarData.SelectedDate = CurrentDate;
             if (lib_Appointments.Items.Count == 1 && lib_Appointments.Items.Count != 0)
-            {
                 SelectedAppointment = (Appointment)lib_Appointments.Items[0];
-            }
         }
             
 

@@ -18,12 +18,13 @@ namespace Kalender.View.Controls
     /// </summary>
     public class DayCalender : Canvas
     {
-        private AppointmentData appointmentData = new AppointmentData();
+        private AppointmentData _appointmentData = new AppointmentData();
 
         public DayCalender()
         {
             Loaded += DayCalender_Loaded;
             SizeChanged += DayCalender_SizeChanged;
+            AppointmentData.Appointments.CollectionChanged += Appointments_CollectionChanged;
         }
 
         #region Dependency Properties
@@ -92,7 +93,7 @@ namespace Kalender.View.Controls
         {
             if (Year != 0 && Month != 0 && Day != 0)
             {
-                AppointmentData.Appointments = new ObservableCollection<Appointment>(appointmentData.GetAppointmentsByDate(Year, Month, Day));
+                AppointmentData.Appointments = new ObservableCollection<Appointment>(_appointmentData.GetAppointmentsByDate(Year, Month, Day));
                 CalendarData.SelectedDate = new DateTime(Year, Month, Day);
                 Children.Clear();
                 AppointmentBars.Clear();
@@ -106,10 +107,20 @@ namespace Kalender.View.Controls
 
         private void DayCalender_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
         {
+            Children.Clear();
             BuildCalender();
         }
 
         private void DayCalender_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Year = CalendarData.SelectedDate.Year; Month = CalendarData.SelectedDate.Month; Day = CalendarData.SelectedDate.Day;
+            Children.Clear();
+            AppointmentBars.Clear();
+            BuildAppointments();
+            BuildCalender();
+        }
+
+        private void Appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             Children.Clear();
             AppointmentBars.Clear();
@@ -127,7 +138,6 @@ namespace Kalender.View.Controls
         {
             foreach (Appointment item in Appointments)
             {
-                item.AppointmentColor = Colors.Red; 
                 AppointmentBar appointmentBar = new AppointmentBar(item);
                 AppointmentBars.Add(new(appointmentBar, item));
             }
@@ -174,10 +184,24 @@ namespace Kalender.View.Controls
 
             int j = 0;
             foreach ((AppointmentBar, Appointment) item in AppointmentBars)
-            {                             
+            {
+                int hEnd = 0;
+                int hStart = 0;
+
+                if (item.Item2.FullTime)
+                {
+                    hEnd = 24;
+                    hStart = 0;
+                }
+                else
+                {
+                    hEnd=item.Item2.HourEnd;
+                    hStart=item.Item2.HourStart;
+                }
+
                 item.Item1.Height = appointmentHeight;
-                item.Item1.Width = (item.Item2.HourEnd * hourWidth + item.Item2.MinuteEnd * (hourWidth / 60)) - (item.Item2.HourStart * hourWidth + item.Item2.MinuteStart * (hourWidth / 60));
-                Canvas.SetLeft(item.Item1, item.Item2.HourStart*hourWidth + item.Item2.MinuteStart*(hourWidth/60));
+                item.Item1.Width = (hEnd * hourWidth + item.Item2.MinuteEnd * (hourWidth / 60)) - (hStart * hourWidth + item.Item2.MinuteStart * (hourWidth / 60));
+                Canvas.SetLeft(item.Item1, hStart * hourWidth + item.Item2.MinuteStart*(hourWidth/60));
                 Canvas.SetTop(item.Item1, j * appointmentHeight + appointmentHeight);
 
                 Children.Add(item.Item1);

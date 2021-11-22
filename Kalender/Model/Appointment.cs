@@ -1,13 +1,12 @@
 ﻿using Kalender.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Kalender.Model
 {
+    /// <summary>
+    /// Model für einen Termin
+    /// </summary>
     public class Appointment : ModelBase
     {
         public Appointment()
@@ -81,15 +80,27 @@ namespace Kalender.Model
         public string Title { get => _title; set { _title = value; NotifyPropertyChanged(nameof(Title));} }
 
         private int _hourStart = 0;
+        /// <summary>
+        /// Die Stunde an dem der Termin startet
+        /// </summary>
         public int HourStart { get { return _hourStart; } set { _hourStart = value;NotifyPropertyChanged(nameof(HourStart));} }
 
         private int _minuteStart = 0;
+        /// <summary>
+        /// Die Minute an dem der Termin startet
+        /// </summary>
         public int MinuteStart { get { return _minuteStart; } set { _minuteStart = value; NotifyPropertyChanged(nameof(MinuteStart));} }
 
         private int _hourEnd = 0;
+        /// <summary>
+        /// Die Stunde an dem der Termin endet
+        /// </summary>
         public int HourEnd { get { return _hourEnd; } set { _hourEnd = value; NotifyPropertyChanged(nameof(HourEnd));} }
 
         private int _minuteEnd = 0;
+        /// <summary>
+        /// Die Minute an dem der Termin endet
+        /// </summary>
         public int MinuteEnd { get { return _minuteEnd; } set { _minuteEnd = value; NotifyPropertyChanged(nameof(MinuteEnd));} }
         #endregion
     }

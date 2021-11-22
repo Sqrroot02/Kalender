@@ -6,10 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Kalender"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converter="clr-namespace:Kalender.View.Converter"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="1200"
+    Height="800"
     mc:Ignorable="d">
+    <Window.Resources>
+        <converter:BoolReverseConverter x:Key="boolRevConv"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
@@ -21,9 +25,38 @@
         <!--<DockPanel x:Name="dop_SideMenu" Width="200" />-->
         <DockPanel Grid.Column="2" DockPanel.Dock="Left">
             <!--  Calender View Options  -->
-            <DockPanel Height="40" DockPanel.Dock="Top" />
+            <DockPanel Height="40" DockPanel.Dock="Top">
+                <TextBlock
+                    Height="30"
+                    Margin="5"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Left"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    Text="Calendar "/>
+                <Button
+                    x:Name="btn_DayView"
+                    Width="100"
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    Click="btn_DayView_Click"
+                    Content="Day"
+                    DockPanel.Dock="Right" />
+                <Button
+                    x:Name="btn_MonthView"
+                    Width="100"
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    Click="btn_MonthView_Click"
+                    Content="Month"
+                    DockPanel.Dock="Right" />
+            </DockPanel>
             <!--  Calender View  -->
-            <Frame x:Name="frm_CalenderView" DockPanel.Dock="Top" />
+            <Frame
+                x:Name="frm_CalenderView"
+                DockPanel.Dock="Top"
+                NavigationUIVisibility="Hidden" />
         </DockPanel>
         <!--  Appointment View  -->
         <ScrollViewer
@@ -38,11 +71,10 @@
                     Opacity="0.5"
                     ShadowDepth="1" />
             </ScrollViewer.Effect>
-            <StackPanel
-                x:Name="dop_AppointmentPanel"
-                Orientation="Vertical"
-                ScrollViewer.VerticalScrollBarVisibility="Visible">
-                <TextBlock
+            <StackPanel>
+                <Expander IsExpanded="True">
+                    <Expander.Header>
+                        <TextBlock
                     Height="30"
                     Margin="5"
                     VerticalAlignment="Top"
@@ -51,7 +83,12 @@
                     FontWeight="Bold"
                     Foreground="Black"
                     Text="Appointments" />
-                <ListBox
+                    </Expander.Header>
+                    <StackPanel
+                x:Name="dop_AppointmentPanel"
+                Orientation="Vertical"
+                ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListBox
                     x:Name="lib_Appointments"
                     VerticalAlignment="Stretch"
                     Background="Transparent"
@@ -59,29 +96,29 @@
                     DockPanel.Dock="Top"
                     ItemsSource="{Binding DayAppointments}"
                     SelectedItem="{Binding SelectedAppointment}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="Transparent" CornerRadius="2">
-                                <Border.Background>
-                                    <SolidColorBrush Color="{Binding AppointmentColor}" />
-                                </Border.Background>
-                                <DockPanel>
-                                    <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Transparent" CornerRadius="2">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{Binding AppointmentColor}" />
+                                        </Border.Background>
+                                        <DockPanel>
+                                            <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
                                         <Run Text="{Binding HourStart}" />
                                         <Run Text=":" />
                                         <Run Text="{Binding MinuteStart}" />
-                                    </TextBlock>
-                                    <TextBlock
+                                            </TextBlock>
+                                            <TextBlock
                                         Margin="5,0,0,0"
                                         HorizontalAlignment="Left"
                                         DockPanel.Dock="Left"
                                         Text="{Binding Title}" />
-                                </DockPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <Button
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Button
                     Height="35"
                     Margin="5,10"
                     HorizontalAlignment="Stretch"
@@ -91,100 +128,109 @@
                     DockPanel.Dock="Top"
                     FontSize="14" />
 
-                <!--  New Appointment View  -->
-                <DockPanel Margin="5" DockPanel.Dock="Top">
-                    <DockPanel Height="30" DockPanel.Dock="Top">
-                        <TextBlock VerticalAlignment="Center" Text="Title: " />
-                        <TextBox
+                        <!--  New Appointment View  -->
+                        <DockPanel Visibility="{Binding AppointmentOptionVisibility, Mode=TwoWay}" Margin="5" DockPanel.Dock="Top">
+                            <TextBlock
+                    Height="20"
+                    Margin="5"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Top"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    Text="Details" />
+                            <DockPanel Height="30" DockPanel.Dock="Top">
+                                <TextBlock VerticalAlignment="Center" Text="Title: " />
+                                <TextBox
                             Name="txb_NewAppTitle"
                             Height="20"
                             Margin="5"
                             Text="{Binding SelectedAppointment.Title, Mode=TwoWay}" />
-                    </DockPanel>
-                    <GroupBox
+                            </DockPanel>
+                            <GroupBox
                         Height="170"
                         VerticalAlignment="Top"
                         DockPanel.Dock="Top"
                         Header="Times">
-                        <StackPanel>
-                            <DockPanel Height="40" VerticalAlignment="Top">
-                                <TextBlock
+                                <StackPanel>
+                                    <DockPanel Height="40" VerticalAlignment="Top">
+                                        <TextBlock
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
                                     Text="  Date:  " />
-                                <DatePicker Height="30" SelectedDate="{Binding SelectedAppointment.Date}" />
-                            </DockPanel>
-                            <DockPanel Height="20">
-                                <TextBlock Text="  Whole Day?: " />
-                                <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" />
-                            </DockPanel>
-                            <DockPanel Height="40" VerticalAlignment="Top">
-                                <TextBlock
+                                        <DatePicker Height="30" SelectedDate="{Binding SelectedAppointment.Date}" />
+                                    </DockPanel>
+                                    <DockPanel Height="20">
+                                        <TextBlock Text="  Whole Day?: " />
+                                        <CheckBox Margin="5,0,0,0" IsChecked="{Binding SelectedAppointment.FullTime, Mode=TwoWay}" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                    <DockPanel IsEnabled="{Binding SelectedAppointment.FullTime, Converter={StaticResource boolRevConv} }" Height="40" VerticalAlignment="Top">
+                                        <TextBlock
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
                                     Text="  Hour Start:  " />
-                                <TextBox
+                                        <TextBox
                                     x:Name="txb_NewAppHourStart"
                                     Width="30"
                                     Height="20"
                                     HorizontalAlignment="Left"
                                     Text="{Binding SelectedAppointment.HourStart}" />
-                                <TextBlock
+                                        <TextBlock
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
                                     Text="  Minute Start:  " />
-                                <TextBox
+                                        <TextBox
                                     x:Name="txb_NewAppMinuteStart"
                                     Width="30"
                                     Height="20"
                                     HorizontalAlignment="Left"
                                     Text="{Binding SelectedAppointment.MinuteStart}" />
-                            </DockPanel>
-                            <DockPanel Height="40" VerticalAlignment="Top">
-                                <TextBlock
+                                    </DockPanel>
+                                    <DockPanel IsEnabled="{Binding SelectedAppointment.FullTime, Converter={StaticResource boolRevConv} }" Height="40" VerticalAlignment="Top">
+                                        <TextBlock
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
                                     Text="  Hour End:  " />
-                                <TextBox
+                                        <TextBox
                                     x:Name="txb_NewAppHourEnd"
                                     Width="30"
                                     Height="20"
                                     HorizontalAlignment="Left"
                                     Text="{Binding SelectedAppointment.HourEnd}" />
-                                <TextBlock
+                                        <TextBlock
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
                                     Text="  Minute End:  " />
-                                <TextBox
+                                        <TextBox
                                     x:Name="txb_NewAppMinuteEnd"
                                     Width="30"
                                     Height="20"
                                     HorizontalAlignment="Left"
                                     Text="{Binding SelectedAppointment.MinuteEnd}" />
-                            </DockPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <DockPanel Height="30" DockPanel.Dock="Top">
-                        <TextBlock VerticalAlignment="Center" Text="  Place:  " />
-                        <TextBox
+                                    </DockPanel>
+                                </StackPanel>
+                            </GroupBox>
+                            <DockPanel Height="30" DockPanel.Dock="Top">
+                                <TextBlock VerticalAlignment="Center" Text="  Place:  " />
+                                <TextBox
                             x:Name="txb_NewAppPlace"
                             Height="20"
                             Text="{Binding SelectedAppointment.Location}" />
-                    </DockPanel>
-                    <DockPanel
+                            </DockPanel>
+                            <DockPanel
                         Height="100"
                         VerticalAlignment="Top"
                         DockPanel.Dock="Top">
-                        <TextBlock VerticalAlignment="Top" Text="  Description:  " />
-                        <TextBox
+                                <TextBlock VerticalAlignment="Top" Text="  Description:  " />
+                                <TextBox
                             x:Name="txb_NewAppDescription"
                             Height="100"
                             FontSize="12"
                             Text="{Binding SelectedAppointment.Description}"
                             TextWrapping="Wrap" />
-                    </DockPanel>
-                    <DockPanel>
-                        <Button
+                            </DockPanel>
+                            <DockPanel>
+                                <Button
                             Width="200"
                             Height="35"
                             Margin="5,10"
@@ -193,15 +239,17 @@
                             Content="Apply"
                             DockPanel.Dock="Left"
                             FontSize="14" />
-                        <Button
+                                <Button
                             Width="40"
                             Height="35"
                             Command="{Binding DeleteCommand}"
                             Content="Del"
                             DockPanel.Dock="Left" />
-                    </DockPanel>
+                            </DockPanel>
 
-                </DockPanel>
+                        </DockPanel>
+                    </StackPanel>
+                </Expander>
             </StackPanel>
         </ScrollViewer>
     </Grid>

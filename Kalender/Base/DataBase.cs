@@ -16,10 +16,6 @@ namespace Kalender.Base
         public MySqlCommand Command { get; set; }
 
         /// <summary>
-        /// Initialisiert benötigte Tabellen
-        /// </summary>
-
-        /// <summary>
         /// Fügt ein Item der Datenbank hinzu
         /// </summary>
         /// <param name="item"></param>
@@ -63,7 +59,7 @@ namespace Kalender.Base
         /// <returns></returns>
         public abstract List<T> GetItems();
 
-        public virtual int ConvertBoolToTinyInt(bool b)
+        public virtual byte ConvertBoolToTinyInt(bool b)
         {
             if (b)
                 return 1;
@@ -71,7 +67,7 @@ namespace Kalender.Base
                 return 0;
         }
 
-        public virtual bool ConvertTinyIntToBool(int val)
+        public virtual bool ConvertTinyIntToBool(byte val)
         {
             if (val == 1)
                 return true;

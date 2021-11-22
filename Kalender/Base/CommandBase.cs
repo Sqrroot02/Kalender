@@ -7,6 +7,10 @@ using System.Windows.Input;
 
 namespace Kalender.Base
 {
+    /// <summary>
+    /// Für die Abarbeitung von Ereignissen im ViewModel einer View
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class CommandBase<T> : ICommand
     {
         private readonly Action<T> executeAction;

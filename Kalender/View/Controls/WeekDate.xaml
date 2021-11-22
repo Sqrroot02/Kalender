@@ -62,14 +62,31 @@
                 VerticalAlignment="Stretch"
                 Background="Transparent"
                 BorderThickness="0"
+                IsEnabled="False"
                 DockPanel.Dock="Top"
                 GotFocus="lib_Appointments_GotFocus"
                 ItemsSource="{Binding Appointments}"
-                SelectedItem="{Binding SelectedAppointment}"
                 SelectionChanged="lib_Appointments_SelectionChanged">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border>
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Transparent" CornerRadius="2">
+                        <Border
+                            Margin="2"
+                            BorderBrush="Transparent"
+                            CornerRadius="2">
                             <Border.Background>
                                 <SolidColorBrush Color="{Binding AppointmentColor}" />
                             </Border.Background>

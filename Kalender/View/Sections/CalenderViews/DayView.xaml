@@ -17,6 +17,8 @@
             <TextBox Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
             <TextBlock DockPanel.Dock="Left" Text="Day: " Margin="3"/>
             <TextBox Text="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
+            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Width="40" Content="Next" Command="{Binding NextDayCom}"/>
+            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Width="40" Content="Prev" Command="{Binding PrevDayCom}"/>
         </DockPanel>
         <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Visible">
             <controls:DayCalender Day="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Month="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Year="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"/>
