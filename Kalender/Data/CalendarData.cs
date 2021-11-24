@@ -54,7 +54,6 @@ namespace Kalender.Data
 
             string sql = "CREATE TABLE IF NOT EXISTS Calender (calenderId VARCHAR(56) PRIMARY KEY, Color VARCHAR(56), userId VARCHAR(56), DateCreated DATETIME);";
             mySqlCommand.CommandText = sql;
-
             mySqlCommand.ExecuteNonQuery();
         }
 

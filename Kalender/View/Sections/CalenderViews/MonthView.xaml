@@ -12,11 +12,11 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="30">
             <TextBlock DockPanel.Dock="Left" Text="Year: " Margin="3"/>
-            <TextBox Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
+            <TextBox Style="{DynamicResource TextBoxStyle}" Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
             <TextBlock DockPanel.Dock="Left" Text="Month: " Margin="3"/>
-            <TextBox Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
-            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Width="40" Content="Next" Command="{Binding NextMonthCom}"/>
-            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Width="40" Content="Prev" Command="{Binding PreviousMonthCom}"/>
+            <TextBox Style="{DynamicResource TextBoxStyle}" Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="3"/>
+            <Button Margin="2" Style="{DynamicResource ButtonStyle}" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="40" Content="Next" Command="{Binding NextMonthCom}"/>
+            <Button Margin="2" Style="{DynamicResource ButtonStyle}" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="40" Content="Prev" Command="{Binding PreviousMonthCom}"/>
         </DockPanel>
         <controls:MonthCalender DockPanel.Dock="Top" Month="{Binding Month,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Year="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"/>
     </DockPanel>

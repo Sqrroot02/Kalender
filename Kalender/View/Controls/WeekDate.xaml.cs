@@ -36,9 +36,9 @@ namespace Kalender.View.Controls
         private void CalendarData_SelectedDateChanged(object? sender, DateTime e)
         {
             if (e.Month == CurrentDate.Month && e.Day == CurrentDate.Day && e.Year == CurrentDate.Year)
-                brd_WeekDateBorder.BorderBrush = Brushes.MediumBlue;
+                brd_WeekDateBorder.BorderBrush = new SolidColorBrush(new Color() { A = 255, R = 87, B = 255, G = 151 });
             else
-                brd_WeekDateBorder.BorderBrush= Brushes.Gray;
+                brd_WeekDateBorder.BorderBrush = Brushes.Gray;
         }
 
         private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)

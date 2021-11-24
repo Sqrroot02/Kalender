@@ -29,7 +29,7 @@ namespace Kalender.View.Controls
         private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)
         {
             if (AppointmentData.SelectedAppointment == Appointment)
-                brd_Bar.BorderBrush = Brushes.Blue;
+                brd_Bar.BorderBrush = new SolidColorBrush(new Color() { A = 255, R = 87, B = 255, G = 151 });
             else
                 brd_Bar.BorderBrush= Brushes.Transparent;
         }

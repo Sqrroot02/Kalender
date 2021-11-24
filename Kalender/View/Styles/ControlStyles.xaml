@@ -1,0 +1,100 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="TextBoxNormal" R="77" B="77" G="77" A="255"/>
+    <SolidColorBrush x:Key="BrushTextBoxNormal" Color="{StaticResource TextBoxNormal}"/>
+    <Color x:Key="TextBoxFocused" R="87" B="255" G="151" A="255"/>
+    <SolidColorBrush x:Key="BrushTextBoxFocused" Color="{StaticResource TextBoxFocused}"/>
+    <Color x:Key="TextBoxDisabled"/>
+    <Color x:Key="TextBoxHover" R="170" B="170" G="170" A="50"/>
+    
+    <Style x:Key="TextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border CornerRadius="2" Background="Transparent" BorderThickness="0 0 0 2" BorderBrush="Gray" x:Name="brd_border">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="Common">
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="00:00:0.2" To="Transparent" Storyboard.TargetName="brd_border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="00:00:0.2" To="{StaticResource TextBoxHover}" Storyboard.TargetName="brd_border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.2" From="1" To="0.5" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="brd_border"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="Focus">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="00:00:0.2" To="{StaticResource TextBoxFocused}" Storyboard.TargetName="brd_border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="00:00:0.2" To="{StaticResource TextBoxNormal}" Storyboard.TargetName="brd_border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}">
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Color x:Key="ButtonColor" R="87" B="255" G="151" A="255"/>
+    <SolidColorBrush x:Key="BrushButton" Color="{StaticResource TextBoxFocused}"/>
+    
+    <Style x:Key="ButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="2" x:Name="brd_Button" BorderThickness="2" BorderBrush="{StaticResource BrushButton}" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource BrushButton}"/>
+                        </Trigger>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource ButtonColor}" Duration="00:00:0.2" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="brd_Button"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="Transparent" Duration="00:00:0.2" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="brd_Button"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
