@@ -1,11 +1,7 @@
 ﻿using Kalender.Data;
 using Kalender.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,6 +25,9 @@ namespace Kalender.View.Controls
 
         #region Dependency Properties
 
+        /// <summary>
+        /// Der zu Anzeigende Tag
+        /// </summary>
         public int Day
         {
             get { return (int)GetValue(DayProperty); }
@@ -42,13 +41,16 @@ namespace Kalender.View.Controls
         public static void CallbackDay(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             DayCalender dayCalender = (DayCalender)sender;
-            if ((int)e.NewValue > 31 && (int)e.NewValue == 0)
-                dayCalender.Day = 1;
+            if ((int)e.NewValue > 31 || (int)e.NewValue == 0)
+                dayCalender.Day = DateTime.Now.Day;
             else
                 dayCalender.Day = (int)e.NewValue;
             dayCalender.DateChanged();
         }
 
+        /// <summary>
+        /// Das zu Anzeigende Jahr
+        /// </summary>
         public int Year
         {
             get { return (int)GetValue(YearProperty); }
@@ -63,12 +65,15 @@ namespace Kalender.View.Controls
         {
             DayCalender dayCalender= (DayCalender)sender;
             if ((int)e.NewValue == 0)
-                dayCalender.Year = 2021;
+                dayCalender.Year = DateTime.Now.Year;
             else
                 dayCalender.Year = (int) e.NewValue;
             dayCalender.DateChanged();
         }
 
+        /// <summary>
+        /// Der zu Anzeigende Monat
+        /// </summary>
         public int Month
         {
             get { return (int)GetValue(MonthProperty); }
@@ -83,7 +88,7 @@ namespace Kalender.View.Controls
         {
             DayCalender dayCalender = (DayCalender)sender;
             if ((int)e.NewValue <= 0 || (int)e.NewValue > 12)
-                dayCalender.Month = 1;
+                dayCalender.Month = DateTime.Now.Month;
             else
                 dayCalender.Month = (int)e.NewValue;
             dayCalender.DateChanged();
@@ -116,6 +121,7 @@ namespace Kalender.View.Controls
             Year = CalendarData.SelectedDate.Year; Month = CalendarData.SelectedDate.Month; Day = CalendarData.SelectedDate.Day;
             Children.Clear();
             AppointmentBars.Clear();
+
             BuildAppointments();
             BuildCalender();
         }
@@ -124,6 +130,7 @@ namespace Kalender.View.Controls
         {
             Children.Clear();
             AppointmentBars.Clear();
+
             BuildAppointments();
             BuildCalender();
         }
@@ -134,6 +141,9 @@ namespace Kalender.View.Controls
         private ObservableCollection<(AppointmentBar, Appointment)> _appointmentBars = new ObservableCollection<(AppointmentBar, Appointment)>();
         public ObservableCollection<(AppointmentBar, Appointment)> AppointmentBars { get { return _appointmentBars; } set { _appointmentBars = value; } }
 
+        /// <summary>
+        /// Baut Appointment Bars zur visualisierung der Termine im Tages Kalender
+        /// </summary>
         public void BuildAppointments()
         {
             foreach (Appointment item in Appointments)

@@ -18,50 +18,52 @@
                 DockPanel.Dock="Left"
                 Text="Year: " />
             <TextBox
-                Style="{DynamicResource TextBoxStyle}"
                 Width="40"
                 Margin="3"
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Left"
+                Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock
                 Margin="3"
                 DockPanel.Dock="Left"
                 Text="Month: " />
-            <TextBox
-                Style="{DynamicResource TextBoxStyle}"
-                Width="40"
+            <ComboBox
+                Width="100"
                 Margin="3"
                 HorizontalAlignment="Left"
+                DisplayMemberPath="Value"
                 DockPanel.Dock="Left"
-                Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                ItemsSource="{Binding Months}"
+                SelectedValue="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="Key" />
             <TextBlock
                 Margin="3"
                 DockPanel.Dock="Left"
                 Text="Day: " />
             <TextBox
-                Style="{DynamicResource TextBoxStyle}"
                 Width="40"
                 Margin="3"
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Left"
+                Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button
-                Style="{DynamicResource ButtonStyle}"
                 Width="40"
                 Margin="2"
                 HorizontalAlignment="Right"
                 Command="{Binding NextDayCom}"
                 Content="Next"
-                DockPanel.Dock="Right" />
+                DockPanel.Dock="Right"
+                Style="{DynamicResource ButtonStyle}" />
             <Button
-                Style="{DynamicResource ButtonStyle}"
                 Width="40"
                 Margin="2"
                 HorizontalAlignment="Right"
                 Command="{Binding PrevDayCom}"
                 Content="Prev"
-                DockPanel.Dock="Right" />
+                DockPanel.Dock="Right"
+                Style="{DynamicResource ButtonStyle}" />
         </DockPanel>
         <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Visible">
             <controls:DayCalender

@@ -62,9 +62,9 @@
                 VerticalAlignment="Stretch"
                 Background="Transparent"
                 BorderThickness="0"
-                IsEnabled="False"
                 DockPanel.Dock="Top"
                 GotFocus="lib_Appointments_GotFocus"
+                IsEnabled="False"
                 ItemsSource="{Binding Appointments}"
                 SelectionChanged="lib_Appointments_SelectionChanged">
                 <ListBox.ItemContainerStyle>

@@ -13,6 +13,7 @@ namespace Kalender.View.Sections.CalenderViews.ViewModels
     /// </summary>
     public class DayView_VM : ViewModelBase
     {
+        private readonly ValueCheck _valueCheck = new ValueCheck();
         public DayView_VM()
         {
 
@@ -36,6 +37,7 @@ namespace Kalender.View.Sections.CalenderViews.ViewModels
         /// </summary>
         public int Month { get => _month; set { _month = value; NotifyPropertyChanged(nameof(Month)); } }
 
+        public Dictionary<int, string> Months { get => _valueCheck.Months; }
         public CommandBase<object> NextDayCom { get; set; }
         public CommandBase<object> PrevDayCom { get; set; }
 

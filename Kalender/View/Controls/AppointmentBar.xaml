@@ -8,24 +8,38 @@
     x:Name="usc_AppointmentBar"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d"
-    MouseLeftButtonDown="usc_AppointmentBar_MouseLeftButtonDown">
-    <Border Opacity="0.7" CornerRadius="5" x:Name="brd_Bar" BorderThickness="2">
+    MouseLeftButtonDown="usc_AppointmentBar_MouseLeftButtonDown"
+    mc:Ignorable="d">
+    <Border
+        x:Name="brd_Bar"
+        BorderThickness="2"
+        CornerRadius="5"
+        Opacity="0.7">
         <Border.Background>
-            <SolidColorBrush Color="{Binding AppointmentColor}"/>
+            <SolidColorBrush Color="{Binding AppointmentColor}" />
         </Border.Background>
         <Border.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
                 <BeginStoryboard>
                     <Storyboard>
-                        <DoubleAnimation Duration="00:00:0.2" From="0.7" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="brd_Bar"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="brd_Bar"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0.7"
+                            To="1"
+                            Duration="00:00:0.2" />
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
             <EventTrigger RoutedEvent="MouseLeave">
                 <BeginStoryboard>
                     <Storyboard>
-                        <DoubleAnimation Duration="00:00:0.2" From="1" To="0.7" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="brd_Bar"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="brd_Bar"
+                            Storyboard.TargetProperty="Opacity"
+                            From="1"
+                            To="0.7"
+                            Duration="00:00:0.2" />
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>

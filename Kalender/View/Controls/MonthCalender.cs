@@ -14,9 +14,18 @@ namespace Kalender.View.Controls
     /// </summary>
     public class MonthCalender : Canvas
     {
-        private readonly AppointmentData appointmentData = new AppointmentData();
+        private readonly AppointmentData _appointmentData = new AppointmentData();
+
+        public MonthCalender()
+        {
+            Appointments = new ObservableCollection<Appointment>();
+            SizeChanged += MonthCalender_SizeChanged;
+        }
 
         #region Dependency Properties
+        /// <summary>
+        /// Der zu Anzeigende Monat
+        /// </summary>
         public int Month
         {
             get { return (int)GetValue(MonthProperty); }
@@ -31,7 +40,7 @@ namespace Kalender.View.Controls
         {
             MonthCalender monthCalender = (MonthCalender)sender;
             if ((int)e.NewValue <= 0 || (int)e.NewValue > 12)
-                monthCalender.Month = 1;
+                monthCalender.Month = DateTime.Now.Month;
             else
                 monthCalender.Month = (int)e.NewValue;
             monthCalender.DateChanged();
@@ -41,7 +50,7 @@ namespace Kalender.View.Controls
         {
             MonthCalender monthCalender = (MonthCalender)sender;
             if ((int)e.NewValue == 0)
-                monthCalender.Year = 2021;
+                monthCalender.Year = DateTime.Now.Year;
             else
                 monthCalender.Year = (int)e.NewValue;
             monthCalender.DateChanged();
@@ -50,8 +59,8 @@ namespace Kalender.View.Controls
         {            
             if (Year != 0 && Month != 0)
             {
-                AppointmentData.Appointments = new ObservableCollection<Appointment>(appointmentData.GetAppointmentsByDate(Year, Month));  
-                CalendarData.SelectedDate = new DateTime(Year, Month, 1);
+                AppointmentData.Appointments = new ObservableCollection<Appointment>(_appointmentData.GetAppointmentsByDate(Year, Month));  
+                CalendarData.SelectedDate = new DateTime(Year, Month, CalendarData.SelectedDate.Day);
                 Children.Clear();
                 WeekDates.Clear();
 
@@ -60,6 +69,9 @@ namespace Kalender.View.Controls
             }            
         }
 
+        /// <summary>
+        /// Das zu Anzeigende Jahr
+        /// </summary>
         public int Year
         {
             get { return (int)GetValue(YearProperty); }
@@ -70,14 +82,9 @@ namespace Kalender.View.Controls
         public static readonly DependencyProperty YearProperty =
             DependencyProperty.Register("Year", typeof(int), typeof(MonthCalender), new PropertyMetadata(CallbackYear));
         #endregion
-
-        public MonthCalender()
-        {
-            Appointments = new ObservableCollection<Appointment>();
-            SizeChanged += MonthCalender_SizeChanged;        
-        }
-
+        
         #region Event Methodes
+ 
         /// <summary>
         /// Aktualisiert den Kalender wenn die Größe vom Visual Parent verändert wurde
         /// </summary>
@@ -141,7 +148,7 @@ namespace Kalender.View.Controls
         public void BuildCalender()
         {
             double widthFactor = (double)GetValue(ActualWidthProperty) / 7;
-            double heightFactor = (double)GetValue(ActualHeightProperty) / 7;
+            double heightFactor = ((double)GetValue(ActualHeightProperty)-4) / 6.3;
             List<TextBlock> weekDays = WeekHeaders();
 
             for (int i = 0; i < weekDays.Count; i++)
@@ -177,6 +184,10 @@ namespace Kalender.View.Controls
             return list;
         }
 
+        /// <summary>
+        /// Baut die Textblocke für die Wochennamen Anzeigen
+        /// </summary>
+        /// <returns></returns>
         private TextBlock BuildTextblock(string text)
         {
             TextBlock textBlock = new TextBlock();

@@ -27,10 +27,20 @@ namespace Kalender.View.Controls
         public WeekDate()
         {
             InitializeComponent();
+
             AppointmentData.Appointments.CollectionChanged += Appointments_CollectionChanged;
             AppointmentData.OnSelectedAppointmentChanged += AppointmentData_OnSelectedAppointmentChanged;
             CalendarData.SelectedDateChanged += CalendarData_SelectedDateChanged;
+            Loaded += WeekDate_Loaded;
+
             DataContext = this;
+        }
+
+        #region Event Methodes
+        private void WeekDate_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (CalendarData.SelectedDate == CurrentDate)
+                brd_WeekDateBorder.BorderBrush = new SolidColorBrush(new Color() { A = 255, R = 87, B = 255, G = 151 });
         }
 
         private void CalendarData_SelectedDateChanged(object? sender, DateTime e)
@@ -58,7 +68,8 @@ namespace Kalender.View.Controls
             if (lib_Appointments.Items.Count == 1 && lib_Appointments.Items.Count != 0)
                 SelectedAppointment = (Appointment)lib_Appointments.Items[0];
         }
-            
+
+        #endregion
 
         public Border VisualBorder { get; set; }
 
