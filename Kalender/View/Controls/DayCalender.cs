@@ -99,9 +99,17 @@ namespace Kalender.View.Controls
             if (Year != 0 && Month != 0 && Day != 0)
             {
                 AppointmentData.Appointments = new ObservableCollection<Appointment>(_appointmentData.GetAppointmentsByDate(Year, Month, Day));
-                CalendarData.SelectedDate = new DateTime(Year, Month, Day);
+                try
+                {
+                    CalendarData.SelectedDate = new DateTime(Year, Month, Day);
+                }
+                catch (Exception)
+                {
+                    CalendarData.SelectedDate = new DateTime(Year, Month, DateTime.DaysInMonth(Year,Month));
+                }
                 Children.Clear();
                 AppointmentBars.Clear();
+                
 
                 BuildAppointments();    
                 BuildCalender();

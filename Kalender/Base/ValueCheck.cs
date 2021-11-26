@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,20 @@ namespace Kalender.Base
             Months.Add(10, "October");
             Months.Add(11, "November");
             Months.Add(12, "December");
+        }
+
+        public ObservableCollection<int> DaysInMonth(int year, int month)
+        {
+            if (month > 0 && month <= 12)
+            {
+                ObservableCollection<int> result = new ObservableCollection<int>();
+                int count = DateTime.DaysInMonth(year, month);
+                for (int i = 1; i <= count; i++)
+                    result.Add(i);
+                return result;
+            }
+            else
+                return null;
         }
 
         public bool IsInt(string obj)

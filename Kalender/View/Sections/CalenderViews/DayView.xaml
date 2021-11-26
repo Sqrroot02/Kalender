@@ -41,13 +41,13 @@
                 Margin="3"
                 DockPanel.Dock="Left"
                 Text="Day: " />
-            <TextBox
-                Width="40"
+            <ComboBox
+                Width="100"
                 Margin="3"
+                ItemsSource="{Binding DaysInYear, UpdateSourceTrigger=PropertyChanged}"
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Left"
-                Style="{DynamicResource TextBoxStyle}"
-                Text="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                SelectedItem="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 Width="40"
                 Margin="2"

@@ -148,7 +148,7 @@ namespace Kalender.View.Controls
         public void BuildCalender()
         {
             double widthFactor = (double)GetValue(ActualWidthProperty) / 7;
-            double heightFactor = ((double)GetValue(ActualHeightProperty)-4) / 6.3;
+            double heightFactor = ((double)GetValue(ActualHeightProperty)) / 6.3;
             List<TextBlock> weekDays = WeekHeaders();
 
             for (int i = 0; i < weekDays.Count; i++)

@@ -46,10 +46,6 @@
         </Border.Triggers>
         <DockPanel Margin="2" Background="Transparent">
             <TextBlock
-                HorizontalAlignment="Left"
-                DockPanel.Dock="Left"
-                Text="{Binding DateStart.Hour}" />
-            <TextBlock
                 Margin="5,0,0,0"
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Left"
