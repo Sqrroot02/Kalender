@@ -62,8 +62,7 @@ namespace Kalender.View.Controls
                 AppointmentData.Appointments = new ObservableCollection<Appointment>(_appointmentData.GetAppointmentsByDate(Year, Month));  
                 CalendarData.SelectedDate = new DateTime(Year, Month, CalendarData.SelectedDate.Day);
                 Children.Clear();
-                WeekDates.Clear();
-
+                
                 BuildWeeks();
                 BuildCalender();
             }            
@@ -120,6 +119,8 @@ namespace Kalender.View.Controls
         /// </summary>
         public void BuildWeeks()
         {
+            WeekDates.Clear();
+
             DateTime currentDate = new DateTime(Year,Month,1);
             int posY = 1;
             for (int i = 1; i <= DateTime.DaysInMonth(currentDate.Year,currentDate.Month); i++)

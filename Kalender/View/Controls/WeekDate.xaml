@@ -88,7 +88,7 @@
                             BorderBrush="Transparent"
                             CornerRadius="2">
                             <Border.Background>
-                                <SolidColorBrush Color="{Binding AppointmentColor}" />
+                                <SolidColorBrush Color="#7cd7f2" />
                             </Border.Background>
                             <DockPanel>
                                 <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">

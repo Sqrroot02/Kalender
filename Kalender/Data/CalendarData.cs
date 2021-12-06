@@ -23,7 +23,7 @@ namespace Kalender.Data
         public static DateTime SelectedDate 
         { 
             get => _selectedDate;
-            set { _selectedDate = value; SelectedDateChanged?.Invoke(value,value); }
+            set { _selectedDate = value; SelectedDateChanged?.Invoke(value,value);GC.Collect(); GC.WaitForPendingFinalizers();GC.Collect(); }
         }
         public override void DeleteItem(Calendar item)
         {

@@ -16,7 +16,7 @@
         CornerRadius="5"
         Opacity="0.7">
         <Border.Background>
-            <SolidColorBrush Color="{Binding AppointmentColor}" />
+            <SolidColorBrush Color="#7cd7f2" />
         </Border.Background>
         <Border.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
