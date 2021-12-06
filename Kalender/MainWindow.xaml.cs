@@ -1,6 +1,6 @@
-﻿using Kalender.Data;
-using Kalender.View.Sections.CalenderViews;
+﻿using Kalender.View.Sections.CalenderViews;
 using Kalender.View.Sections.Main.ViewModels;
+using System;
 using System.Windows;
 
 namespace Kalender
@@ -12,23 +12,71 @@ namespace Kalender
     {
         public AppointmentConfiguration_VM AppointmentConfigurationVM { get; set; }
 
+        public MonthView MonthView { get; set; }
+        public DayView DayView { get; set; }    
+
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();   
+
             AppointmentConfigurationVM = new AppointmentConfiguration_VM();
+
+            DayView = new DayView();
+            MonthView = new MonthView();
+            
             frm_CalenderView.Content = new MonthView();
+
             dop_AppointmentPanel.DataContext = AppointmentConfigurationVM;
         }
 
-        private void btn_MonthView_Click(object sender, RoutedEventArgs e)
+        private void btn_MonthView_Click(object sender, RoutedEventArgs e) =>
+            frm_CalenderView.Content = MonthView;
+
+        private void btn_DayView_Click(object sender, RoutedEventArgs e) =>
+            frm_CalenderView.Content = DayView;            
+
+        // Prüft ob die Startuhrzeit kleiner als die Enduhrzeit ist und setzt diese gleich wenn dies nicht der Fall seien sollte
+        private void txb_NewAppHourStart_LostFocus(object sender, RoutedEventArgs e)
         {
-            frm_CalenderView.Content = new MonthView();
+            int hEnd = 0;
+            int hStart = 0;
+
+            int.TryParse(txb_NewAppHourStart.Text, out hStart);
+            int.TryParse(txb_NewAppHourEnd.Text, out hEnd);
+
+            if (hEnd < hStart)
+            {
+                txb_NewAppHourEnd.Text = hStart.ToString();
+                txb_NewAppMinuteStart.Text = "0";
+                txb_NewAppMinuteEnd.Text = "0";
+            }
         }
 
-        private void btn_DayView_Click(object sender, RoutedEventArgs e)
+        // Prüft ob die Startuhrzeit kleiner als die Enduhrzeit ist und setzt diese gleich wenn dies nicht der Fall seien sollte
+        private void txb_NewAppHourEnd_LostFocus(object sender, RoutedEventArgs e)
         {
-            frm_CalenderView.Content = new DayView();
-             
+            int hEnd = 0;
+            int hStart = 0;
+
+            int.TryParse(txb_NewAppHourStart.Text, out hStart);
+            int.TryParse(txb_NewAppHourEnd.Text, out hEnd);
+
+            if (hEnd < hStart)
+            {
+                txb_NewAppHourStart.Text = hEnd.ToString();
+                txb_NewAppMinuteStart.Text = "0";
+                txb_NewAppMinuteEnd.Text = "0";
+            }
+                
+        }
+
+        // Prüft ob eine Zahl für die Uhrzeit angegeben wurde und erlaubt die Eingabe nur in diesem Falle
+        private void txb_NewAppMinuteStart_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if (char.IsDigit(Convert.ToChar(e.Text))) 
+                e.Handled = false;
+            else
+                e.Handled = true;
         }
     }
 }

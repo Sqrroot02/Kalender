@@ -105,7 +105,7 @@
                                 <DataTemplate>
                                     <Border BorderBrush="Transparent" CornerRadius="2">
                                         <Border.Background>
-                                            <SolidColorBrush Color="{Binding AppointmentColor}" />
+                                            <SolidColorBrush Color="#7cd7f2" />
                                         </Border.Background>
                                         <DockPanel>
                                             <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
@@ -184,10 +184,12 @@
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Left"
-                                            Text="  Hour Start:  " />
+                                            Text="  Hour Start:  "/>
                                         <TextBox
                                             x:Name="txb_NewAppHourStart"
+                                            PreviewTextInput="txb_NewAppMinuteStart_PreviewTextInput"
                                             Width="30"
+                                            LostFocus="txb_NewAppHourStart_LostFocus"
                                             Height="20"
                                             HorizontalAlignment="Left"
                                             Style="{DynamicResource TextBoxStyle}"
@@ -198,6 +200,7 @@
                                             Text="  Minute Start:  " />
                                         <TextBox
                                             x:Name="txb_NewAppMinuteStart"
+                                            PreviewTextInput="txb_NewAppMinuteStart_PreviewTextInput"
                                             Width="30"
                                             Height="20"
                                             HorizontalAlignment="Left"
@@ -215,6 +218,8 @@
                                         <TextBox
                                             x:Name="txb_NewAppHourEnd"
                                             Width="30"
+                                            PreviewTextInput="txb_NewAppMinuteStart_PreviewTextInput"
+                                            LostFocus="txb_NewAppHourEnd_LostFocus"
                                             Height="20"
                                             HorizontalAlignment="Left"
                                             Style="{DynamicResource TextBoxStyle}"
@@ -226,6 +231,7 @@
                                         <TextBox
                                             x:Name="txb_NewAppMinuteEnd"
                                             Width="30"
+                                            PreviewTextInput="txb_NewAppMinuteStart_PreviewTextInput"
                                             Height="20"
                                             HorizontalAlignment="Left"
                                             Style="{DynamicResource TextBoxStyle}"
@@ -254,7 +260,7 @@
                                     TextWrapping="Wrap" />
                             </DockPanel>
                             <DockPanel>
-                                <Button
+                                <!--<Button
                                     Width="200"
                                     Height="35"
                                     Margin="5,10"
@@ -263,7 +269,7 @@
                                     Content="Apply"
                                     DockPanel.Dock="Left"
                                     FontSize="14"
-                                    Style="{DynamicResource ButtonStyle}" />
+                                    Style="{DynamicResource ButtonStyle}" />-->
                                 <Button
                                     Width="40"
                                     Height="35"

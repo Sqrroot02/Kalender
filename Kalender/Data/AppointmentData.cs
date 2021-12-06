@@ -28,7 +28,8 @@ namespace Kalender.Data
         /// <summary>
         /// Alle Termine die im derzeitigen Context relevant sind
         /// </summary>
-        public static ObservableCollection<Appointment> Appointments = new ObservableCollection<Appointment>();
+        private static ObservableCollection<Appointment> _appointments = new ObservableCollection<Appointment>();
+        public static ObservableCollection<Appointment> Appointments { get => _appointments; set => _appointments = value; }
         private static Appointment _selectedAppointment = null;
         /// <summary>
         /// Der derzeitig Ausgewählte Termin
@@ -96,8 +97,7 @@ namespace Kalender.Data
         /// <param name="item"></param>
         public override void InsertItem(Appointment item)
         {
-            item.AppointmentColor = Colors.CadetBlue;
-            string sql = @"INSERT INTO appointment (appointmentId,Place,Title,Date,WholeDay,Description,HourStart,HourEnd,MinuteStart,MinuteEnd,Color) VALUES (@aidappointment, @aplace,@atitle,@adatestart,@awholeday,@adescription,@ahourend,@ahourstart,@aminstart, @aminend,@acolor)";
+            string sql = @"INSERT INTO appointment (appointmentId,Place,Title,Date,WholeDay,Description,HourStart,HourEnd,MinuteStart,MinuteEnd) VALUES (@aidappointment, @aplace,@atitle,@adatestart,@awholeday,@adescription,@ahourend,@ahourstart,@aminstart, @aminend)";
             _command.CommandText = sql;
             _command.Parameters.Clear();
 
@@ -111,7 +111,6 @@ namespace Kalender.Data
             _command.Parameters.Add(new MySqlParameter("ahourstart", item.HourStart));
             _command.Parameters.Add(new MySqlParameter("aminstart", item.MinuteStart));
             _command.Parameters.Add(new MySqlParameter("aminend", item.MinuteEnd));
-            _command.Parameters.Add(new MySqlParameter("acolor", item.AppointmentColor.ToString()));
 
             _command.ExecuteNonQuery();
         }
@@ -127,7 +126,7 @@ namespace Kalender.Data
         /// <param name="item"></param>
         public override void UpdateItem(Appointment item)
         {
-            string sql = @"UPDATE appointment SET Place=@aplace,Title=@atitle,Date=@adatestart,WholeDay=@awholeday,Description=@adescription,HourStart=@ahstart,HourEnd=@ahend,MinuteStart=@amstart,MinuteEnd=@amend,Color=@acolor WHERE appointmentId=@aidappointment";
+            string sql = @"UPDATE appointment SET Place=@aplace,Title=@atitle,Date=@adatestart,WholeDay=@awholeday,Description=@adescription,HourStart=@ahstart,HourEnd=@ahend,MinuteStart=@amstart,MinuteEnd=@amend WHERE appointmentId=@aidappointment";
             _command.CommandText = sql;
             _command.Parameters.Clear();
             
@@ -141,7 +140,6 @@ namespace Kalender.Data
             _command.Parameters.Add(new MySqlParameter("ahend", item.HourEnd));
             _command.Parameters.Add(new MySqlParameter("amstart", item.MinuteStart));
             _command.Parameters.Add(new MySqlParameter("amend", item.MinuteEnd));
-            _command.Parameters.Add(new MySqlParameter("acolor", item.AppointmentColor.ToString()));
 
             _command.ExecuteNonQuery();
         }
@@ -168,7 +166,6 @@ namespace Kalender.Data
                     HourEnd = Convert.ToInt32(item["HourEnd"]),
                     MinuteEnd = Convert.ToInt32(item["MinuteEnd"]),
                     MinuteStart = Convert.ToInt32(item["MinuteStart"]),
-                    AppointmentColor = (Color)ColorConverter.ConvertFromString(item["Color"].ToString())
                 };
                 list.Add(appointment);
             }

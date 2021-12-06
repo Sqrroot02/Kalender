@@ -2,6 +2,7 @@
 using Kalender.Model;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,15 +13,16 @@ namespace Kalender.View.Controls
     /// <summary>
     /// Tageskalender Ansicht
     /// </summary>
-    public class DayCalender : Canvas
+    public class DayCalender : Canvas , INotifyPropertyChanged
     {
         private AppointmentData _appointmentData = new AppointmentData();
 
         public DayCalender()
         {
+            AppointmentData.Appointments = new ObservableCollection<Appointment>();
+            AppointmentData.Appointments.CollectionChanged += Appointments_CollectionChanged;
             Loaded += DayCalender_Loaded;
             SizeChanged += DayCalender_SizeChanged;
-            AppointmentData.Appointments.CollectionChanged += Appointments_CollectionChanged;
         }
 
         #region Dependency Properties
@@ -118,6 +120,11 @@ namespace Kalender.View.Controls
 
         #endregion
 
+        /// <summary>
+        /// Baut den Kalender neu, wenn die Größe des Fensters verändert wird
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DayCalender_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
         {
             Children.Clear();
@@ -147,6 +154,9 @@ namespace Kalender.View.Controls
         public ObservableCollection<Appointment> Appointments { get => AppointmentData.Appointments; }
 
         private ObservableCollection<(AppointmentBar, Appointment)> _appointmentBars = new ObservableCollection<(AppointmentBar, Appointment)>();
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public ObservableCollection<(AppointmentBar, Appointment)> AppointmentBars { get { return _appointmentBars; } set { _appointmentBars = value; } }
 
         /// <summary>
@@ -224,6 +234,14 @@ namespace Kalender.View.Controls
 
                 Children.Add(item.Item1);
                 j++;
+            }
+
+            void NotifyPropertyChanged(string propName)
+            {
+                PropertyChangedEventHandler handler = PropertyChanged;
+                if (handler != null)
+                    handler(this, new PropertyChangedEventArgs(propName));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
             }
         }
     }
