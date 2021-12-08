@@ -30,10 +30,10 @@ namespace Kalender
         }
 
         private void btn_MonthView_Click(object sender, RoutedEventArgs e) =>
-            frm_CalenderView.Content = MonthView;
+            frm_CalenderView.Content = new MonthView();
 
         private void btn_DayView_Click(object sender, RoutedEventArgs e) =>
-            frm_CalenderView.Content = DayView;            
+            frm_CalenderView.Content = new DayView();            
 
         // Prüft ob die Startuhrzeit kleiner als die Enduhrzeit ist und setzt diese gleich wenn dies nicht der Fall seien sollte
         private void txb_NewAppHourStart_LostFocus(object sender, RoutedEventArgs e)

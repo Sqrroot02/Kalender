@@ -293,6 +293,12 @@
                             Foreground="Black"
                             Text="Calenders" />
                     </Expander.Header>
+                    <DockPanel>
+                        <Button x:Name="btn_NewCalender" Height="30" Margin="3" Style="{DynamicResource ButtonStyle}" Content="New Calender"/>
+                        <ListBox>
+                            
+                        </ListBox>
+                    </DockPanel>
                 </Expander>
             </StackPanel>
         </ScrollViewer>
