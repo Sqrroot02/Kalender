@@ -19,7 +19,7 @@ namespace Kalender
             DatabaseConnection.UserName = "root";
             DatabaseConnection.Password = "kuzsgcebvtwiuiguiuzgrwzuer";
             DatabaseConnection.SSLMode = "0";
-            DatabaseConnection.Port = "3301";
+            DatabaseConnection.Port = "3306";
 
             // Erstellt die Connection und Verbindet sich mit der Datenbank
             DatabaseConnection.CreateConnection();

@@ -11,6 +11,7 @@ namespace Kalender
     public partial class MainWindow : Window
     {
         public AppointmentConfiguration_VM AppointmentConfigurationVM { get; set; }
+        public CalendarConfiguration_VM CalendarConfigurationVM { get; set; }
 
         public MonthView MonthView { get; set; }
         public DayView DayView { get; set; }    
@@ -20,6 +21,7 @@ namespace Kalender
             InitializeComponent();   
 
             AppointmentConfigurationVM = new AppointmentConfiguration_VM();
+            CalendarConfigurationVM = new CalendarConfiguration_VM();  
 
             DayView = new DayView();
             MonthView = new MonthView();
@@ -27,6 +29,7 @@ namespace Kalender
             frm_CalenderView.Content = new MonthView();
 
             dop_AppointmentPanel.DataContext = AppointmentConfigurationVM;
+            dop_CalenderSettings.DataContext = CalendarConfigurationVM;
         }
 
         private void btn_MonthView_Click(object sender, RoutedEventArgs e) =>
@@ -66,8 +69,7 @@ namespace Kalender
                 txb_NewAppHourStart.Text = hEnd.ToString();
                 txb_NewAppMinuteStart.Text = "0";
                 txb_NewAppMinuteEnd.Text = "0";
-            }
-                
+            }             
         }
 
         // Prüft ob eine Zahl für die Uhrzeit angegeben wurde und erlaubt die Eingabe nur in diesem Falle

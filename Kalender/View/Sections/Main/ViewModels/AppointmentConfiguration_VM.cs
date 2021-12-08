@@ -67,6 +67,10 @@ namespace Kalender.View.Sections.Main.ViewModels
         private DateTime _currentDate = DateTime.Now;
         public DateTime CurrentDate { get => CalendarData.SelectedDate; }
 
+        public ObservableCollection<Calendar> Calendars { get => CalendarData.Calendars; }
+
+        public Calendar SelectedCalender { get => CalendarData.SelectedCalender; set => CalendarData.SelectedCalender = value;}
+
         /// <summary>
         /// Fügt einen neuen Termin hinzu
         /// </summary>

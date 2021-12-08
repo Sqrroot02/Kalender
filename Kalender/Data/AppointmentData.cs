@@ -55,10 +55,9 @@ namespace Kalender.Data
             mySqlCommand.Connection = DatabaseConnection.Connection;
             mySqlCommand.Parameters.Clear();
 
-            string sqlAppointment = "CREATE TABLE IF NOT EXISTS Appointment (appointmentId VARCHAR(56) PRIMARY KEY, Place VARCHAR(56), Title VARCHAR(512), Date DATETIME, HourStart INT, HourEnd INT, MinuteStart INT, MinuteEnd INT, WholeDay TINYINT(1), Description VARCHAR(2048), Color VARCHAR(45));";
-            string sqlAppointmentCalender = "CREATE TABLE IF NOT EXISTS CalenderEntry (appointmentId VARCHAR(56), calenderId VARCHAR(56), IsVisible TINYINT(1))"; 
+            string sqlAppointment = "CREATE TABLE IF NOT EXISTS Appointment (appointmentId VARCHAR(56) PRIMARY KEY, Place VARCHAR(56), Title VARCHAR(512), Date DATETIME, HourStart INT, HourEnd INT, MinuteStart INT, MinuteEnd INT, WholeDay TINYINT(1), Description VARCHAR(2048), Color VARCHAR(45), calenderId VARCHAR(56));";
 
-            mySqlCommand.CommandText = sqlAppointment + sqlAppointmentCalender;
+            mySqlCommand.CommandText = sqlAppointment;
 
             mySqlCommand.ExecuteNonQuery();
         }
@@ -70,9 +69,11 @@ namespace Kalender.Data
         public override void DeleteItem(Appointment item)
         {
             string sql = @"DELETE FROM appointment WHERE appointmentId=@aid";
-            _command.CommandText = sql;
+            _command.CommandText = sql; 
+
             _command.Parameters.Clear();
             _command.Parameters.Add(new MySqlParameter("aid", item.AppointmentId));
+
             _command.ExecuteNonQuery();
         }
 
@@ -97,7 +98,8 @@ namespace Kalender.Data
         /// <param name="item"></param>
         public override void InsertItem(Appointment item)
         {
-            string sql = @"INSERT INTO appointment (appointmentId,Place,Title,Date,WholeDay,Description,HourStart,HourEnd,MinuteStart,MinuteEnd) VALUES (@aidappointment, @aplace,@atitle,@adatestart,@awholeday,@adescription,@ahourend,@ahourstart,@aminstart, @aminend)";
+            string sql = @"INSERT INTO appointment (appointmentId,Place,Title,Date,WholeDay,Description,HourStart,HourEnd,MinuteStart,MinuteEnd,calenderId) VALUES (@aidappointment, @aplace,@atitle,@adatestart,@awholeday,@adescription,@ahourend,@ahourstart,@aminstart, @aminend, @acalenderId)";
+
             _command.CommandText = sql;
             _command.Parameters.Clear();
 
@@ -111,6 +113,7 @@ namespace Kalender.Data
             _command.Parameters.Add(new MySqlParameter("ahourstart", item.HourStart));
             _command.Parameters.Add(new MySqlParameter("aminstart", item.MinuteStart));
             _command.Parameters.Add(new MySqlParameter("aminend", item.MinuteEnd));
+            _command.Parameters.Add(new MySqlParameter("acalenderId", item.CalenderId));
 
             _command.ExecuteNonQuery();
         }
@@ -126,7 +129,8 @@ namespace Kalender.Data
         /// <param name="item"></param>
         public override void UpdateItem(Appointment item)
         {
-            string sql = @"UPDATE appointment SET Place=@aplace,Title=@atitle,Date=@adatestart,WholeDay=@awholeday,Description=@adescription,HourStart=@ahstart,HourEnd=@ahend,MinuteStart=@amstart,MinuteEnd=@amend WHERE appointmentId=@aidappointment";
+            string sql = @"UPDATE appointment SET Place=@aplace,Title=@atitle,Date=@adatestart,WholeDay=@awholeday,Description=@adescription,HourStart=@ahstart,HourEnd=@ahend,MinuteStart=@amstart,MinuteEnd=@amend,calenderId=@acalenderId WHERE appointmentId=@aidappointment";
+
             _command.CommandText = sql;
             _command.Parameters.Clear();
             
@@ -140,6 +144,7 @@ namespace Kalender.Data
             _command.Parameters.Add(new MySqlParameter("ahend", item.HourEnd));
             _command.Parameters.Add(new MySqlParameter("amstart", item.MinuteStart));
             _command.Parameters.Add(new MySqlParameter("amend", item.MinuteEnd));
+            _command.Parameters.Add(new MySqlParameter("acalenderId", item.CalenderId));
 
             _command.ExecuteNonQuery();
         }
@@ -152,6 +157,7 @@ namespace Kalender.Data
         public List<Appointment> MapAppointments(DataTable dt)
         {
             List<Appointment> list = new List<Appointment>();
+
             foreach (DataRow item in dt.Rows)
             {
                 Appointment appointment = new Appointment
@@ -166,6 +172,7 @@ namespace Kalender.Data
                     HourEnd = Convert.ToInt32(item["HourEnd"]),
                     MinuteEnd = Convert.ToInt32(item["MinuteEnd"]),
                     MinuteStart = Convert.ToInt32(item["MinuteStart"]),
+                    CalenderId = Guid.Parse(item["calenderId"].ToString())
                 };
                 list.Add(appointment);
             }
@@ -181,7 +188,9 @@ namespace Kalender.Data
         public List<Appointment> GetAppointmentsByDate(int year, int month)
         {
             List<Appointment> list = new List<Appointment>();
+
             string sql = @"SELECT * FROM appointment WHERE YEAR(Date)=@ayear AND MONTH(Date)=@amonth";
+
             _command.CommandText = sql;
             _command.Parameters.Clear();
 
@@ -207,7 +216,9 @@ namespace Kalender.Data
         public List<Appointment> GetAppointmentsByDate(int year, int month, int day)
         {
             List<Appointment> list = new List<Appointment>();
+
             string sql = @"SELECT * FROM appointment WHERE YEAR(Date)=@ayear AND MONTH(Date)=@amonth AND DAY(DATE)=@aday";
+
             _command.CommandText = sql;
             _command.Parameters.Clear();
 

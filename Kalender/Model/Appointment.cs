@@ -18,6 +18,16 @@ namespace Kalender.Model
 
         #region Eigenschaften
 
+        private Guid _calenderId = Guid.NewGuid();  
+        /// <summary>
+        /// Die ID der dazugehörigem Kalenders
+        /// </summary>
+        public Guid CalenderId 
+        { 
+            get { return _calenderId; }  
+            set { _calenderId = value; NotifyPropertyChanged(nameof(CalenderId)); _appointmentData.UpdateItem(this); }
+        }
+
         private Guid _appointmentId;
         /// <summary>
         /// Die ID des Termines
@@ -37,7 +47,6 @@ namespace Kalender.Model
             get { return _dateStart; }
             set { _dateStart = value; NotifyPropertyChanged(nameof(Date)); _appointmentData.UpdateItem(this); }
         }
-
 
         private string _description = "";
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Kalender.Base;
+using Kalender.Data;
 using System;
 using System.Windows.Media;
 
@@ -9,6 +10,8 @@ namespace Kalender.Model
     /// </summary>
     public class Calendar : ModelBase
     {
+        private readonly CalendarData _data = new CalendarData();
+
         public Calendar()
         {
 
@@ -16,14 +19,14 @@ namespace Kalender.Model
 
         #region Eigenschaften
 
-        private string _name = "";
+        private string _name = "New Calender";
         /// <summary>
         /// Der Name des Kalenders
         /// </summary>
         public string Name 
         {
             get => _name;
-            set { _name = value; NotifyPropertyChanged(nameof(Name)); }
+            set { _name = value; NotifyPropertyChanged(nameof(Name)); _data.UpdateItem(this); }
         }
 
         private Guid _calendarId = Guid.NewGuid();
@@ -33,7 +36,7 @@ namespace Kalender.Model
         public Guid CalendarId
         {
             get => _calendarId;
-            set { _calendarId = value; NotifyPropertyChanged(nameof(CalendarId)); }
+            set { _calendarId = value; NotifyPropertyChanged(nameof(CalendarId)); _data.UpdateItem(this); }
         }
 
         private Color _color = Colors.Red;
@@ -54,6 +57,16 @@ namespace Kalender.Model
         {
             get => _timeCreated;
             set { _timeCreated = value; NotifyPropertyChanged(nameof(TimeCreated)); }
+        }
+
+        private bool _isVisible = true;
+        /// <summary>
+        /// Soll Termine dieses Kalenders angezeigt werden oder nicht?
+        /// </summary>
+        public bool IsVisible 
+        { 
+            get => _isVisible;
+            set { _isVisible = value; NotifyPropertyChanged(nameof(IsVisible)); }
         }
 
         #endregion

@@ -21,11 +21,22 @@ namespace Kalender.View.Sections.Main.ViewModels
 
         public override void InitCommand()
         {
-            base.InitCommand();
+            NewCalenderCommand = new CommandBase<object>(AddNewCalender);
         }
 
         public CommandBase<object> NewCalenderCommand { get; set; }
 
         public ObservableCollection<Calendar> Calendars => CalendarData.Calendars;
+
+        public Calendar SelectedCalender { get => CalendarData.SelectedCalender; set => CalendarData.SelectedCalender = value; }
+
+        public void AddNewCalender(object obj)
+        {
+            Calendar calendar = new Calendar(); 
+            CalendarData.SelectedCalender = calendar;
+            CalendarData.Calendars.Add(calendar);
+            _calenderData.InsertItem(calendar); 
+            
+        }
     }
 }
