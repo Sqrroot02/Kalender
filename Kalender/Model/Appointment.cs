@@ -115,7 +115,7 @@ namespace Kalender.Model
 
                 if (tEnd < tStart)
                 {
-                    _hourStart = tEnd.Hour; MinuteStart = tEnd.Minute;
+                    HourEnd = tStart.Hour; MinuteEnd = tStart.Minute;
                 }
 
                 NotifyPropertyChanged(nameof(HourStart));
@@ -146,7 +146,7 @@ namespace Kalender.Model
 
                 if (tEnd < tStart)
                 {
-                    HourStart = tEnd.Hour; _minuteStart = tEnd.Minute;
+                    HourEnd = tStart.Hour; MinuteEnd = tStart.Minute;
                 }
 
                 NotifyPropertyChanged(nameof(MinuteStart)); 
