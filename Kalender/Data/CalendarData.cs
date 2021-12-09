@@ -8,9 +8,13 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Kalender.Data
 {
+    /// <summary>
+    /// Datenlogik für Kalenderdaten
+    /// </summary>
     public sealed class CalendarData : DataBase<Calendar>
     {
         /// <summary>
@@ -109,7 +113,7 @@ namespace Kalender.Data
                     Name = item["Name"].ToString(),
                     TimeCreated = DateTime.Parse(item["DateCreated"].ToString()),
                     CalendarId = Guid.Parse(item["calenderId"].ToString()),
-                    IsVisible = ConvertTinyIntToBool(Convert.ToByte(item["IsVisible"]))
+                    Color = (Color)ColorConverter.ConvertFromString(item["Color"].ToString())
                 };
                 calendars.Add(calendar);
             }
@@ -131,14 +135,22 @@ namespace Kalender.Data
 
         public override void InsertItem(Calendar item)
         {
-            string sql = @"INSERT INTO calender (calenderId,DateCreated,Name) VALUES (@cid,@dtcreate,@cname)";
+            Random rnd = new Random();
+            Color col = new Color();
+            col.R = Convert.ToByte(rnd.Next(255));
+            col.G = Convert.ToByte(rnd.Next(255));
+            col.B = Convert.ToByte(rnd.Next(255));
+            col.A = 140;
+            item.Color = col;
+
+            string sql = @"INSERT INTO calender (calenderId,DateCreated,Name,Color) VALUES (@cid,@dtcreate,@cname,@ccolor)";
 
             _command.Parameters.Clear();
             _command.CommandText = sql;
             _command.Parameters.Add(new MySqlParameter("cid", item.CalendarId));
             _command.Parameters.Add(new MySqlParameter("dtcreate", item.TimeCreated));
             _command.Parameters.Add(new MySqlParameter("cname", item.Name));
-            _command.Parameters.Add(new MySqlParameter("cvisible", ConvertBoolToTinyInt(item.IsVisible)));
+            _command.Parameters.Add(new MySqlParameter("ccolor", item.Color.ToString()));
 
             _command.ExecuteNonQuery();
         }
@@ -150,15 +162,13 @@ namespace Kalender.Data
 
         public override void UpdateItem(Calendar item)
         {
-            string sql = @"UPDATE calender SET Color=@ccolor,DateCreated=@cdateCreated,Name=@cname,IsVisible=@cvisible WHERE calenderId=@ccalenderId;";
+            string sql = @"UPDATE calender SET DateCreated=@cdateCreated,Name=@cname WHERE calenderId=@ccalenderId;";
 
             _command.Parameters.Clear();
             _command.CommandText= sql;
-            _command.Parameters.Add(new MySqlParameter("ccolor", item.Color));
             _command.Parameters.Add(new MySqlParameter("cdateCreated", item.TimeCreated));
             _command.Parameters.Add(new MySqlParameter("cname", item.Name));
             _command.Parameters.Add(new MySqlParameter("ccalenderId", item.CalendarId));
-            _command.Parameters.Add(new MySqlParameter("cvisible", ConvertBoolToTinyInt(item.IsVisible)));
 
             _command.ExecuteNonQuery();
         }

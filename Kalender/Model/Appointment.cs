@@ -1,7 +1,11 @@
 ﻿using Kalender.Base;
 using Kalender.Data;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
+using System.Windows;
 
 namespace Kalender.Model
 {
@@ -25,7 +29,7 @@ namespace Kalender.Model
         public Guid CalenderId 
         { 
             get { return _calenderId; }  
-            set { _calenderId = value; NotifyPropertyChanged(nameof(CalenderId)); _appointmentData.UpdateItem(this); }
+            set { _calenderId = value; NotifyPropertyChanged(nameof(CalenderId)); _appointmentData.UpdateItem(this); NotifyPropertyChanged(nameof(AppoinmentBrush)); }
         }
 
         private Guid _appointmentId;
@@ -94,25 +98,148 @@ namespace Kalender.Model
         /// <summary>
         /// Die Stunde an dem der Termin startet
         /// </summary>
-        public int HourStart { get { return _hourStart; } set { _hourStart = value;NotifyPropertyChanged(nameof(HourStart)); _appointmentData.UpdateItem(this); } }
+        public int HourStart 
+        { 
+            get { return _hourStart; } 
+            set 
+            {
+                if (value < 23 && value >= 0)
+                    _hourStart = value;
+                else if (value < 0)
+                    _hourStart = 0;
+                else if (value >= 24)
+                    _hourStart = 23;
+
+                TimeOnly tEnd = new TimeOnly(HourEnd, MinuteEnd);
+                TimeOnly tStart = new TimeOnly(_hourStart, MinuteStart);
+
+                if (tEnd < tStart)
+                {
+                    _hourStart = tEnd.Hour; MinuteStart = tEnd.Minute;
+                }
+
+                NotifyPropertyChanged(nameof(HourStart));
+                NotifyPropertyChanged(nameof(TimeSpan));
+
+                _appointmentData.UpdateItem(this); 
+            } 
+        }
 
         private int _minuteStart = 0;
         /// <summary>
         /// Die Minute an dem der Termin startet
         /// </summary>
-        public int MinuteStart { get { return _minuteStart; } set { _minuteStart = value; NotifyPropertyChanged(nameof(MinuteStart)); _appointmentData.UpdateItem(this); } }
+        public int MinuteStart 
+        { 
+            get { return _minuteStart; } 
+            set 
+            {
+                if (value < 60 && value >= 0)
+                    _minuteStart = value;
+                else if (value < 0)
+                    _minuteStart = 0;
+                else if (value >= 60)
+                    _minuteStart = 59;
+
+                TimeOnly tEnd = new TimeOnly(HourEnd, MinuteEnd);
+                TimeOnly tStart = new TimeOnly(HourStart, _minuteStart);
+
+                if (tEnd < tStart)
+                {
+                    HourStart = tEnd.Hour; _minuteStart = tEnd.Minute;
+                }
+
+                NotifyPropertyChanged(nameof(MinuteStart)); 
+                NotifyPropertyChanged(nameof(TimeSpan));
+
+                _appointmentData.UpdateItem(this); 
+            } 
+        }
 
         private int _hourEnd = 0;
         /// <summary>
         /// Die Stunde an dem der Termin endet
         /// </summary>
-        public int HourEnd { get { return _hourEnd; } set { _hourEnd = value; NotifyPropertyChanged(nameof(HourEnd)); _appointmentData.UpdateItem(this); } }
+        public int HourEnd 
+        { 
+            get { return _hourEnd; } 
+            set 
+            {
+                if (value < 23 && value >= 0)
+                    _hourEnd = value;
+                else if (value < 0)
+                    _hourEnd = 23;
+                else if (value >= 24)
+                    _hourEnd = 23;
+
+                TimeOnly tEnd = new TimeOnly(_hourEnd, MinuteEnd);
+                TimeOnly tStart = new TimeOnly(HourStart, MinuteStart);
+
+                if (tEnd < tStart)
+                {
+                    _hourEnd = tStart.Hour; MinuteEnd = tStart.Minute;
+                }
+
+                NotifyPropertyChanged(nameof(HourEnd));
+                NotifyPropertyChanged(nameof(TimeSpan));
+
+                _appointmentData.UpdateItem(this); 
+            } 
+        }
 
         private int _minuteEnd = 0;
         /// <summary>
         /// Die Minute an dem der Termin endet
         /// </summary>
-        public int MinuteEnd { get { return _minuteEnd; } set { _minuteEnd = value; NotifyPropertyChanged(nameof(MinuteEnd)); _appointmentData.UpdateItem(this); } }
+        public int MinuteEnd 
+        { 
+            get { return _minuteEnd; } 
+            set 
+            {
+                if (value < 60 && value >= 0)
+                    _minuteEnd = value;
+                else if (value < 0)
+                    _minuteEnd = 0;
+                else if (value >= 60)
+                    _minuteEnd = 59;
+
+                TimeOnly tEnd = new TimeOnly(HourEnd, _minuteEnd);
+                TimeOnly tStart = new TimeOnly(HourStart, MinuteStart);
+
+                if (tEnd < tStart)
+                {
+                    HourEnd = tStart.Hour; _minuteEnd = tStart.Minute;
+                }
+
+                NotifyPropertyChanged(nameof(MinuteEnd));
+                NotifyPropertyChanged(nameof(TimeSpan));
+
+                _appointmentData.UpdateItem(this); 
+            } 
+        }
+
+        #region Visual Properties
+
+        public string TimeSpan
+        {
+            get
+            {
+                TimeOnly timeStart = new TimeOnly(HourStart,MinuteStart);
+                TimeOnly timeEnd = new TimeOnly(HourEnd,MinuteEnd);
+                return timeStart.ToShortTimeString() + " - " + timeEnd.ToShortTimeString();
+            }
+        }
+
+        public SolidColorBrush AppoinmentBrush
+        {
+            get 
+            {
+                var calender = CalendarData.Calendars.Where(x => x.CalendarId == CalenderId).FirstOrDefault();
+                return calender == null ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(calender.Color);
+            }
+        }
+        
+        #endregion
         #endregion
     }
 }

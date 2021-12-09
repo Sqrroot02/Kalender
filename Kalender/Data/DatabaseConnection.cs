@@ -79,8 +79,6 @@ namespace Kalender.Data
 
             CalendarData.InitTables();
             AppointmentData.InitTables();
-            NotificationData.InitTables();
-            UserData.InitTables();  
         }
     }
 }

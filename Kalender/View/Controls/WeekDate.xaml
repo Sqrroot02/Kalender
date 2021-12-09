@@ -4,11 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Kalender.View.Controls"
+    xmlns:conv="clr-namespace:Kalender.View.Converter"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="usc_WeekDate"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <conv:BoolReverseVisibilityConverter x:Key="boolVisConv"/>
+    </UserControl.Resources>
     <Border
         x:Name="brd_WeekDateBorder"
         Margin="1"
@@ -64,7 +68,7 @@
                 BorderThickness="0"
                 DockPanel.Dock="Top"
                 GotFocus="lib_Appointments_GotFocus"
-                IsEnabled="False"
+                IsEnabled="True"
                 ItemsSource="{Binding Appointments}"
                 SelectionChanged="lib_Appointments_SelectionChanged">
                 <ListBox.ItemContainerStyle>
@@ -85,22 +89,23 @@
                     <DataTemplate>
                         <Border
                             Margin="2"
+                            Background="{Binding AppoinmentBrush}"
                             BorderBrush="Transparent"
                             CornerRadius="2">
-                            <Border.Background>
-                                <SolidColorBrush Color="#7cd7f2" />
-                            </Border.Background>
                             <DockPanel>
-                                <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
-                                    <Run Text="{Binding HourStart}" />
-                                    <Run Text=":" />
-                                    <Run Text="{Binding MinuteStart}" />
-                                </TextBlock>
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     HorizontalAlignment="Left"
                                     DockPanel.Dock="Left"
                                     Text="{Binding Title}" />
+                                <TextBlock
+                                    Visibility="{Binding FullTime,Converter={StaticResource boolVisConv}}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    DockPanel.Dock="Left"
+                                    Margin="3 0 0 0"
+                                    FontSize="9"
+                                    Text="{Binding TimeSpan}" />
                             </DockPanel>
                         </Border>
                     </DataTemplate>

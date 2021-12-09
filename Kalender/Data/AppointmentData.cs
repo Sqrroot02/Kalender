@@ -4,12 +4,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace Kalender.Data
 {
@@ -109,9 +104,9 @@ namespace Kalender.Data
             _command.Parameters.Add(new MySqlParameter("adatestart", item.Date));
             _command.Parameters.Add(new MySqlParameter("awholeday", ConvertBoolToTinyInt(item.FullTime)));
             _command.Parameters.Add(new MySqlParameter("adescription", item.Description));
-            _command.Parameters.Add(new MySqlParameter("ahourend", item.HourEnd));
             _command.Parameters.Add(new MySqlParameter("ahourstart", item.HourStart));
             _command.Parameters.Add(new MySqlParameter("aminstart", item.MinuteStart));
+            _command.Parameters.Add(new MySqlParameter("ahourend", item.HourEnd));
             _command.Parameters.Add(new MySqlParameter("aminend", item.MinuteEnd));
             _command.Parameters.Add(new MySqlParameter("acalenderId", item.CalenderId));
 
@@ -168,10 +163,10 @@ namespace Kalender.Data
                     Date = DateTime.Parse(item["Date"].ToString()),
                     FullTime = ConvertTinyIntToBool(Convert.ToByte(item["WholeDay"])),
                     Description = item["Description"].ToString(),
-                    HourStart = Convert.ToInt32(item["HourStart"]),
                     HourEnd = Convert.ToInt32(item["HourEnd"]),
                     MinuteEnd = Convert.ToInt32(item["MinuteEnd"]),
-                    MinuteStart = Convert.ToInt32(item["MinuteStart"]),
+                    HourStart = Convert.ToInt32(item["HourStart"]),
+                    MinuteStart = Convert.ToInt32(item["MinuteStart"]),                                      
                     CalenderId = Guid.Parse(item["calenderId"].ToString())
                 };
                 list.Add(appointment);

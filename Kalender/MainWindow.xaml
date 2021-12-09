@@ -10,12 +10,13 @@
     Title="Calender"
     Width="1200"
     Height="800"
-    MinWidth="400"
+    MinWidth="900"
     MinHeight="500"
     SnapsToDevicePixels="True"
     mc:Ignorable="d">
     <Window.Resources>
         <converter:BoolReverseConverter x:Key="boolRevConv" />
+        <converter:BoolReverseVisibilityConverter x:Key="boolVisConv" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -72,10 +73,10 @@
             ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Effect>
                 <DropShadowEffect
-                    BlurRadius="5"
+                    BlurRadius="10"
                     Direction="-90"
                     Opacity="0.5"
-                    ShadowDepth="1" />
+                    ShadowDepth="2" />
             </ScrollViewer.Effect>
             <StackPanel>
                 <Expander IsExpanded="True">
@@ -104,36 +105,30 @@
                             SelectedItem="{Binding SelectedAppointment}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="Transparent" CornerRadius="2">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="#7cd7f2" />
-                                        </Border.Background>
+                                    <Border
+                                        Background="{Binding AppoinmentBrush}"
+                                        BorderBrush="Transparent"
+                                        CornerRadius="2">
                                         <DockPanel>
-                                            <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
-                                                <Run Text="{Binding HourStart}" />
-                                                <Run Text=":" />
-                                                <Run Text="{Binding MinuteStart}" />
-                                            </TextBlock>
                                             <TextBlock
-                                                Margin="5,0,0,0"
+                                                Margin="5,0,5,0"
                                                 HorizontalAlignment="Left"
                                                 DockPanel.Dock="Left"
                                                 Text="{Binding Title}" />
+                                            <TextBlock
+                                                Margin="3,0,5,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                DockPanel.Dock="Left"
+                                                FontSize="9"
+                                                Text="{Binding TimeSpan}"
+                                                Visibility="{Binding FullTime, Converter={StaticResource boolVisConv}}" />
                                         </DockPanel>
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button
-                            Height="35"
-                            Margin="5,10"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top"
-                            Command="{Binding AddCommand}"
-                            Content="Add New"
-                            DockPanel.Dock="Top"
-                            FontSize="14"
-                            Style="{DynamicResource ButtonStyle}" />
+
 
                         <!--  New Appointment View  -->
                         <DockPanel
@@ -191,7 +186,6 @@
                                             Width="30"
                                             Height="20"
                                             HorizontalAlignment="Left"
-                                            LostFocus="txb_NewAppHourStart_LostFocus"
                                             PreviewTextInput="txb_NewAppMinuteStart_PreviewTextInput"
                                             Style="{DynamicResource TextBoxStyle}"
                                             Text="{Binding SelectedAppointment.HourStart}" />
@@ -221,7 +215,6 @@
                                             Width="30"
                                             Height="20"
                                             HorizontalAlignment="Left"
-                                            LostFocus="txb_NewAppHourEnd_LostFocus"
                                             PreviewTextInput="txb_NewAppMinuteStart_PreviewTextInput"
                                             Style="{DynamicResource TextBoxStyle}"
                                             Text="{Binding SelectedAppointment.HourEnd}" />
@@ -260,9 +253,19 @@
                                     Text="{Binding SelectedAppointment.Description}"
                                     TextWrapping="Wrap" />
                             </DockPanel>
-                            <DockPanel Height="60" VerticalAlignment="Top" DockPanel.Dock="Top">
-                                <TextBlock Text="Calender: " VerticalAlignment="Top"/>
-                                <ComboBox VerticalAlignment="Top" Height="20" ItemsSource="{Binding Calendars}" SelectedValue="{Binding SelectedAppointment.CalenderId,Mode=TwoWay}" DisplayMemberPath="Name" SelectedValuePath="CalendarId"/>
+                            <DockPanel
+                                Height="40"
+                                Margin="0,5,0,0"
+                                VerticalAlignment="Top"
+                                DockPanel.Dock="Top">
+                                <TextBlock VerticalAlignment="Top" Text="  Calender: " />
+                                <ComboBox
+                                    Height="20"
+                                    VerticalAlignment="Top"
+                                    DisplayMemberPath="Name"
+                                    ItemsSource="{Binding Calendars}"
+                                    SelectedValue="{Binding SelectedAppointment.CalenderId, Mode=TwoWay}"
+                                    SelectedValuePath="CalendarId" />
                             </DockPanel>
                             <DockPanel>
                                 <!--<Button
@@ -275,18 +278,33 @@
                                     DockPanel.Dock="Left"
                                     FontSize="14"
                                     Style="{DynamicResource ButtonStyle}" />-->
+
                                 <Button
-                                    Width="40"
+                                    Width="80"
                                     Height="35"
+                                    Margin="5"
+                                    HorizontalAlignment="Right"
                                     Command="{Binding DeleteCommand}"
-                                    Content="Del"
+                                    Content="Delete"
                                     DockPanel.Dock="Left"
                                     Style="{DynamicResource ButtonStyle}" />
                             </DockPanel>
                         </DockPanel>
+                        <Button
+                            Width="160"
+                            Height="35"
+                            Margin="5,10"
+                            VerticalAlignment="Top"
+                            Command="{Binding AddCommand}"
+                            Content="New Appoinment"
+                            DockPanel.Dock="Left"
+                            FontSize="14"
+                            Style="{DynamicResource ButtonStyle}" />
                     </StackPanel>
                 </Expander>
-                <Expander>
+
+                <!--  Kalender Liste  -->
+                <Expander IsExpanded="True">
                     <Expander.Header>
                         <TextBlock
                             Height="30"
@@ -299,14 +317,6 @@
                             Text="Calenders" />
                     </Expander.Header>
                     <DockPanel x:Name="dop_CalenderSettings">
-                        <Button
-                            x:Name="btn_NewCalender"
-                            Height="30"
-                            Margin="3"
-                            Command="{Binding NewCalenderCommand}"
-                            Content="New Calender"
-                            DockPanel.Dock="Top"
-                            Style="{DynamicResource ButtonStyle}" />
                         <ListBox
                             VerticalAlignment="Top"
                             BorderBrush="Transparent"
@@ -316,21 +326,43 @@
                             SelectionMode="Single">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <DockPanel>
-                                        <TextBox
-                                            Margin="5,0,5,0"
-                                            HorizontalAlignment="Left"
-                                            DockPanel.Dock="Left"
-                                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" />
-                                        <CheckBox
-                                            Margin="5,0,0,0"
-                                            HorizontalAlignment="Right"
-                                            DockPanel.Dock="Left"
-                                            IsChecked="{Binding IsVisible, Mode=TwoWay}" />
-                                    </DockPanel>
+                                    <Border
+                                        Height="25"
+                                        BorderBrush="Transparent"
+                                        CornerRadius="2">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{Binding Color}" />
+                                        </Border.Background>
+                                        <DockPanel Margin="2">
+                                            <TextBox
+                                                Margin="2,0,2,0"
+                                                HorizontalAlignment="Left"
+                                                DockPanel.Dock="Left"
+                                                Style="{DynamicResource TextBoxStyle}"
+                                                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" />
+                                        </DockPanel>
+                                    </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                        <Button
+                            x:Name="btn_NewCalender"
+                            Width="160"
+                            Height="35"
+                            Margin="3"
+                            Command="{Binding NewCalenderCommand}"
+                            Content="New Calender"
+                            DockPanel.Dock="Left"
+                            Style="{DynamicResource ButtonStyle}" />
+                        <Button
+                            x:Name="btn_DeleteCalender"
+                            Width="80"
+                            Height="35"
+                            Margin="3"
+                            Command="{Binding DeleteCalenderCommand}"
+                            Content="Delete"
+                            DockPanel.Dock="Left"
+                            Style="{DynamicResource ButtonStyle}" />
                     </DockPanel>
                 </Expander>
             </StackPanel>

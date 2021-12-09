@@ -1,15 +1,13 @@
 ﻿using Kalender.Data;
 using Kalender.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kalender.Base
 {
+    /// <summary>
+    /// Basisklasse für alle ViewModels
+    /// </summary>
     public class ViewModelBase : INotifyPropertyChanged
     {
         public ViewModelBase()
@@ -18,7 +16,7 @@ namespace Kalender.Base
             Appointments.CollectionChanged += Appointments_CollectionChanged;
         }
 
-        private void Appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) 
         {
             AppointmentData.Appointments = Appointments;
         }
@@ -37,6 +35,5 @@ namespace Kalender.Base
         }
 
         public virtual void InitCommand() { }
-
     }
 }

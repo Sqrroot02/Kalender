@@ -22,9 +22,11 @@ namespace Kalender.View.Sections.Main.ViewModels
         public override void InitCommand()
         {
             NewCalenderCommand = new CommandBase<object>(AddNewCalender);
+            DeleteCalenderCommand = new CommandBase<object>(DeleteCalender);
         }
 
         public CommandBase<object> NewCalenderCommand { get; set; }
+        public CommandBase<object> DeleteCalenderCommand { get; set; }
 
         public ObservableCollection<Calendar> Calendars => CalendarData.Calendars;
 
@@ -35,8 +37,14 @@ namespace Kalender.View.Sections.Main.ViewModels
             Calendar calendar = new Calendar(); 
             CalendarData.SelectedCalender = calendar;
             CalendarData.Calendars.Add(calendar);
-            _calenderData.InsertItem(calendar); 
-            
+            _calenderData.InsertItem(calendar);             
+        }
+
+        public void DeleteCalender(object obj)
+        {           
+            _calenderData.DeleteItem(SelectedCalender);
+            CalendarData.Calendars.Remove(SelectedCalender);
+            SelectedCalender = CalendarData.Calendars.FirstOrDefault(); 
         }
     }
 }
