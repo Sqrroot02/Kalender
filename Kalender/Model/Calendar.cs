@@ -1,12 +1,13 @@
 ﻿using Kalender.Base;
 using Kalender.Data;
 using System;
+using System.Linq;
 using System.Windows.Media;
 
 namespace Kalender.Model
 {
     /// <summary>
-    /// Die Modelklasse für einen Kalernder
+    /// Die Modelklasse für einen Kalender
     /// </summary>
     public class Calendar : ModelBase
     {
@@ -14,7 +15,7 @@ namespace Kalender.Model
 
         public Calendar()
         {
-
+            
         }
 
         #region Eigenschaften
@@ -39,7 +40,7 @@ namespace Kalender.Model
             set { _calendarId = value; NotifyPropertyChanged(nameof(CalendarId)); _data.UpdateItem(this); }
         }
 
-        private Color _color = Colors.Red;
+        private Color _color;
         /// <summary>
         /// Die Farbe des Kalenders
         /// </summary>
@@ -66,7 +67,17 @@ namespace Kalender.Model
         public bool IsVisible 
         { 
             get => _isVisible;
-            set { _isVisible = value; NotifyPropertyChanged(nameof(IsVisible)); }
+            set 
+            { 
+                _isVisible = value; 
+                NotifyPropertyChanged(nameof(IsVisible));
+                if (value == false)
+                {
+                    var appointments = AppointmentData.Appointments.Where(x => x.CalenderId == CalendarId).ToList();
+                    foreach (var item in appointments)
+                        AppointmentData.Appointments.Remove(item);
+                }
+            }
         }
 
         #endregion

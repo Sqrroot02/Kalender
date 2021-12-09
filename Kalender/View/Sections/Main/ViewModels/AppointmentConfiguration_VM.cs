@@ -88,6 +88,7 @@ namespace Kalender.View.Sections.Main.ViewModels
             AppointmentData.Appointments.Add(appointment);
             _appointmentData.InsertItem(appointment);
             SelectedAppointment = appointment;
+
             NotifyPropertyChanged(nameof(DayAppointments));
         }
 
@@ -100,6 +101,7 @@ namespace Kalender.View.Sections.Main.ViewModels
             _appointmentData.UpdateItem(SelectedAppointment);
             AppointmentData.Appointments.Remove(SelectedAppointment);
             AppointmentData.Appointments.Add(SelectedAppointment);
+
             NotifyPropertyChanged(nameof(DayAppointments));
         }
 
@@ -112,6 +114,7 @@ namespace Kalender.View.Sections.Main.ViewModels
             _appointmentData.DeleteItem(SelectedAppointment);
             AppointmentData.Appointments.Remove(SelectedAppointment);   
             SelectedAppointment=null;
+
             NotifyPropertyChanged(nameof(DayAppointments));
         }
     }

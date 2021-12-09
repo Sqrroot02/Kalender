@@ -38,39 +38,7 @@ namespace Kalender
         private void btn_DayView_Click(object sender, RoutedEventArgs e) =>
             frm_CalenderView.Content = new DayView();            
 
-        // Prüft ob die Startuhrzeit kleiner als die Enduhrzeit ist und setzt diese gleich wenn dies nicht der Fall seien sollte
-        private void txb_NewAppHourStart_LostFocus(object sender, RoutedEventArgs e)
-        {
-            int hEnd = 0;
-            int hStart = 0;
-
-            int.TryParse(txb_NewAppHourStart.Text, out hStart);
-            int.TryParse(txb_NewAppHourEnd.Text, out hEnd);
-
-            if (hEnd < hStart)
-            {
-                txb_NewAppHourEnd.Text = hStart.ToString();
-                txb_NewAppMinuteStart.Text = "0";
-                txb_NewAppMinuteEnd.Text = "0";
-            }
-        }
-
-        // Prüft ob die Startuhrzeit kleiner als die Enduhrzeit ist und setzt diese gleich wenn dies nicht der Fall seien sollte
-        private void txb_NewAppHourEnd_LostFocus(object sender, RoutedEventArgs e)
-        {
-            int hEnd = 0;
-            int hStart = 0;
-
-            int.TryParse(txb_NewAppHourStart.Text, out hStart);
-            int.TryParse(txb_NewAppHourEnd.Text, out hEnd);
-
-            if (hEnd < hStart)
-            {
-                txb_NewAppHourStart.Text = hEnd.ToString();
-                txb_NewAppMinuteStart.Text = "0";
-                txb_NewAppMinuteEnd.Text = "0";
-            }             
-        }
+        
 
         // Prüft ob eine Zahl für die Uhrzeit angegeben wurde und erlaubt die Eingabe nur in diesem Falle
         private void txb_NewAppMinuteStart_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)

@@ -201,7 +201,7 @@ namespace Kalender.View.Controls
                 textBlock.FontSize = 13;
                 textBlock.FontWeight = FontWeights.Normal;
 
-                Canvas.SetLeft(textBlock,i*hourWidth + hourWidth/2);
+                Canvas.SetLeft(textBlock,i*hourWidth +3);
                 Canvas.SetTop(textBlock,5);
 
                 Children.Add(textBlock);

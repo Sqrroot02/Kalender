@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
 namespace Kalender.Base
 {
+    /// <summary>
+    /// Basisklasse für jede Datensteuerungsklasse
+    /// </summary>
+    /// <typeparam name="T">Der Typ der zur steuernden Daten</typeparam>
     public abstract class DataBase<T>
     {
         public DataBase()
@@ -59,6 +59,7 @@ namespace Kalender.Base
         /// <returns></returns>
         public abstract List<T> GetItems();
 
+        // MySQL besitzt kein bool, daher werden bools als Byte und in SQL als TinyInt 1 oder 0 gespeichert
         public virtual byte ConvertBoolToTinyInt(bool b)
         {
             if (b)
