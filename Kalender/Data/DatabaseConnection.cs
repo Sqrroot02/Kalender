@@ -30,7 +30,7 @@ namespace Kalender.Data
         {
             string connectinstringXAMPP = $"host=localhost;database=calendar;user=root;SSL Mode=0;port=3306";
             string connectionString = $@"host={Host};user={UserName};password={Password};port={Port};database={Database};SSL Mode={SSLMode}";
-            Connection = new MySqlConnection(connectionString);
+            Connection = new MySqlConnection(connectinstringXAMPP);
         }
 
         /// <summary>
