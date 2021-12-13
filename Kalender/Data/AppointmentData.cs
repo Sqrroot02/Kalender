@@ -17,6 +17,16 @@ namespace Kalender.Data
         /// Event für das neu auswählen eines Termines
         /// </summary>
         public static event EventHandler<Appointment>? OnSelectedAppointmentChanged;
+        /// <summary>
+        /// Event für die Veränderung der Terminliste
+        /// !!! Geht normalerweise auch bei ObservalCollection mit "OnCollectionChanged". Hat aber bei
+        /// der DayView nicht funktioniert, deshalb diese unschöne Lösung !!!
+        /// </summary>
+        public static event EventHandler<object>? OnAppointmentsChanged;
+        /// <summary>
+        /// Event für die Veränderung der Terminzeiten
+        /// </summary>
+        public static event EventHandler? OnSelectedAppointmentTimesChanged;
 
         MySqlCommand _command = new MySqlCommand();
        
@@ -24,7 +34,8 @@ namespace Kalender.Data
         /// Alle Termine die im derzeitigen Context relevant sind
         /// </summary>
         private static ObservableCollection<Appointment> _appointments = new ObservableCollection<Appointment>();
-        public static ObservableCollection<Appointment> Appointments { get => _appointments; set => _appointments = value; }
+        public static ObservableCollection<Appointment> Appointments { get => _appointments; set { _appointments = value; _appointments.CollectionChanged += _appointments_CollectionChanged; } }
+      
         private static Appointment _selectedAppointment = null;
         /// <summary>
         /// Der derzeitig Ausgewählte Termin
@@ -32,8 +43,14 @@ namespace Kalender.Data
         public static Appointment SelectedAppointment
         {
             get => _selectedAppointment;
-            set { _selectedAppointment = value; OnSelectedAppointmentChanged?.Invoke(value, value); }
+            set { _selectedAppointment = value; OnSelectedAppointmentChanged?.Invoke(value, value); _selectedAppointment.OnTimesChanged += _selectedAppointment_OnTimesChanged; }
         }
+
+        private static void _selectedAppointment_OnTimesChanged(object? sender, EventArgs e) =>
+            OnSelectedAppointmentTimesChanged?.Invoke(sender, EventArgs.Empty);
+
+        private static void _appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) =>
+            OnAppointmentsChanged?.Invoke(sender, EventArgs.Empty);
 
         public AppointmentData()
         {

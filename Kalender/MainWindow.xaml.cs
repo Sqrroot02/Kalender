@@ -14,7 +14,9 @@ namespace Kalender
         public CalendarConfiguration_VM CalendarConfigurationVM { get; set; }
 
         public MonthView MonthView { get; set; }
-        public DayView DayView { get; set; }    
+        public DayView DayView { get; set; }   
+        
+        private bool _isPanelExpanded = true;
 
         public MainWindow()
         {
@@ -47,6 +49,25 @@ namespace Kalender
                 e.Handled = false;
             else
                 e.Handled = true;
+        }
+
+        /// <summary>
+        /// Minimiert oder Expandiert das Settingspanel beim betätigen des Buttons
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_ExpandSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isPanelExpanded)
+            {
+                scv_OptionsPanel.Width = 0;
+                _isPanelExpanded = false;
+            }
+            else
+            {
+                scv_OptionsPanel.Width = 300;
+                _isPanelExpanded=true;
+            }                                      
         }
     }
 }

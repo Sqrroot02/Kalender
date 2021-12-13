@@ -20,9 +20,38 @@ namespace Kalender.View.Controls
         public DayCalender()
         {
             AppointmentData.Appointments = new ObservableCollection<Appointment>();
-            AppointmentData.Appointments.CollectionChanged += Appointments_CollectionChanged;
+            AppointmentData.OnAppointmentsChanged += AppointmentData_OnAppointmentsChanged;
+            AppointmentData.OnSelectedAppointmentTimesChanged += AppointmentData_OnSelectedAppointmentTimesChanged;
+
             Loaded += DayCalender_Loaded;
             SizeChanged += DayCalender_SizeChanged;
+        }
+
+        private void AppointmentData_OnSelectedAppointmentTimesChanged(object? sender, EventArgs e)
+        {
+            Children.Clear();
+            AppointmentBars.Clear();
+
+            BuildAppointments();
+            BuildCalender();
+        }
+
+        private void SelectedAppointment_OnTimesChanged(object? sender, EventArgs e)
+        {
+            Children.Clear();
+            AppointmentBars.Clear();
+
+            BuildAppointments();
+            BuildCalender();
+        }
+
+        private void AppointmentData_OnAppointmentsChanged(object? sender, object e)
+        {
+            Children.Clear();
+            AppointmentBars.Clear();
+
+            BuildAppointments();
+            BuildCalender();
         }
 
         #region Dependency Properties
@@ -134,15 +163,6 @@ namespace Kalender.View.Controls
         private void DayCalender_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             Year = CalendarData.SelectedDate.Year; Month = CalendarData.SelectedDate.Month; Day = CalendarData.SelectedDate.Day;
-            Children.Clear();
-            AppointmentBars.Clear();
-
-            BuildAppointments();
-            BuildCalender();
-        }
-
-        private void Appointments_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
             Children.Clear();
             AppointmentBars.Clear();
 

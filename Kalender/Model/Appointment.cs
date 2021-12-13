@@ -2,10 +2,7 @@
 using Kalender.Data;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Media;
-using System.Windows;
 
 namespace Kalender.Model
 {
@@ -15,13 +12,15 @@ namespace Kalender.Model
     public class Appointment : ModelBase
     {
         private readonly AppointmentData _appointmentData = new AppointmentData();
+        public event EventHandler? OnTimesChanged;
+
         public Appointment()
         {
 
         }
 
         #region Eigenschaften
-
+        #region Ids
         private Guid _calenderId = Guid.NewGuid();  
         /// <summary>
         /// Die ID der dazugehörigem Kalenders
@@ -41,7 +40,7 @@ namespace Kalender.Model
             get { return _appointmentId; }
             set { _appointmentId = value; NotifyPropertyChanged(nameof(AppointmentId)); }
         }
-
+        #endregion
         private DateTime _dateStart = DateTime.Now;
         /// <summary>
         /// Das Datum und die Zeit an dem der Termin startet
@@ -93,7 +92,7 @@ namespace Kalender.Model
         /// Der Titel des Termines
         /// </summary>
         public string Title { get => _title; set { _title = value; NotifyPropertyChanged(nameof(Title)); _appointmentData.UpdateItem(this); } }
-
+        #region Times
         private int _hourStart = 0;
         /// <summary>
         /// Die Stunde an dem der Termin startet
@@ -120,6 +119,7 @@ namespace Kalender.Model
 
                 NotifyPropertyChanged(nameof(HourStart));
                 NotifyPropertyChanged(nameof(TimeSpan));
+                OnTimesChanged?.Invoke(this, EventArgs.Empty);
 
                 _appointmentData.UpdateItem(this); 
             } 
@@ -151,6 +151,7 @@ namespace Kalender.Model
 
                 NotifyPropertyChanged(nameof(MinuteStart)); 
                 NotifyPropertyChanged(nameof(TimeSpan));
+                OnTimesChanged?.Invoke(this, EventArgs.Empty);
 
                 _appointmentData.UpdateItem(this); 
             } 
@@ -182,6 +183,7 @@ namespace Kalender.Model
 
                 NotifyPropertyChanged(nameof(HourEnd));
                 NotifyPropertyChanged(nameof(TimeSpan));
+                OnTimesChanged?.Invoke(this, EventArgs.Empty);
 
                 _appointmentData.UpdateItem(this); 
             } 
@@ -213,13 +215,16 @@ namespace Kalender.Model
 
                 NotifyPropertyChanged(nameof(MinuteEnd));
                 NotifyPropertyChanged(nameof(TimeSpan));
+                OnTimesChanged?.Invoke(this, EventArgs.Empty);
 
                 _appointmentData.UpdateItem(this); 
             } 
         }
-
+        #endregion
         #region Visual Properties
-
+        /// <summary>
+        /// Nutzt Start- und Endzeit und konvertiert diese zu einem Zeitspannenstring
+        /// </summary>
         public string TimeSpan
         {
             get
@@ -230,6 +235,9 @@ namespace Kalender.Model
             }
         }
 
+        /// <summary>
+        /// Der Brush wird durch den refenzierten Kalender zurückgeben
+        /// </summary>
         public SolidColorBrush AppoinmentBrush
         {
             get 

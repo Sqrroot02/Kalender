@@ -62,7 +62,7 @@ namespace Kalender.Model
 
         private bool _isVisible = true;
         /// <summary>
-        /// Soll Termine dieses Kalenders angezeigt werden oder nicht?
+        /// Sollen Termine dieses Kalenders angezeigt werden oder nicht?
         /// </summary>
         public bool IsVisible 
         { 
