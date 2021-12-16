@@ -18,7 +18,7 @@ namespace Kalender
             DatabaseConnection.Host = "localhost";
             DatabaseConnection.Database = "calendar";
             DatabaseConnection.UserName = "root";
-            DatabaseConnection.Password = "kuzsgcebvtwiuiguiuzgrwzuer";
+            DatabaseConnection.Password = "";
             DatabaseConnection.SSLMode = "0";
             DatabaseConnection.Port = "3306";
 
