@@ -6,7 +6,7 @@ namespace Kalender.Base
     /// <summary>
     /// Basisklasse für jede Datensteuerungsklasse
     /// </summary>
-    /// <typeparam name="T">Der Typ der zur steuernden Daten</typeparam>
+    /// <typeparam name="T">Der Typ der zur Steuernden Daten</typeparam>
     public abstract class DataBase<T>
     {
         public DataBase()
@@ -75,6 +75,5 @@ namespace Kalender.Base
             else
                 return false;
         }
-
     }
 }

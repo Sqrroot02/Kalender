@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using MySql.Data.MySqlClient;
 
 namespace Kalender.Data
 {
     /// <summary>
-    /// Statische J
+    /// Regelung der Datenbank Verbindung
+    /// Änderungen für den Connection-String können in der Klasse 'App' vorgenommen werden
     /// </summary>
     public static class DatabaseConnection
     {
@@ -30,7 +27,7 @@ namespace Kalender.Data
         {
             string connectinstringXAMPP = $"host=localhost;database=calendar;user=root;SSL Mode=0;port=3306";
             string connectionString = $@"host={Host};user={UserName};password={Password};port={Port};database={Database};SSL Mode={SSLMode}";
-            Connection = new MySqlConnection(connectinstringXAMPP);
+            Connection = new MySqlConnection(connectionString);
         }
 
         /// <summary>

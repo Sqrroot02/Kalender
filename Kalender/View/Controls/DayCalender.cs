@@ -29,29 +29,12 @@ namespace Kalender.View.Controls
 
         private void AppointmentData_OnSelectedAppointmentTimesChanged(object? sender, EventArgs e)
         {
-            Children.Clear();
-            AppointmentBars.Clear();
-
-            BuildAppointments();
-            BuildCalender();
-        }
-
-        private void SelectedAppointment_OnTimesChanged(object? sender, EventArgs e)
-        {
-            Children.Clear();
-            AppointmentBars.Clear();
-
-            BuildAppointments();
-            BuildCalender();
+            RefreshVisuals();
         }
 
         private void AppointmentData_OnAppointmentsChanged(object? sender, object e)
         {
-            Children.Clear();
-            AppointmentBars.Clear();
-
-            BuildAppointments();
-            BuildCalender();
+            Refresh();
         }
 
         #region Dependency Properties
@@ -136,14 +119,29 @@ namespace Kalender.View.Controls
                 }
                 catch (Exception)
                 {
-                    CalendarData.SelectedDate = new DateTime(Year, Month, DateTime.DaysInMonth(Year,Month));
-                }
-                Children.Clear();
-                AppointmentBars.Clear();
-                
+                    try
+                    {
+                        CalendarData.SelectedDate = new DateTime(Year, Month, DateTime.DaysInMonth(Year,Month));
+                    }
+                    catch (Exception)
+                    {
 
-                BuildAppointments();    
-                BuildCalender();
+                        CalendarData.SelectedDate = DateTime.Now;
+                    }
+                    
+                }
+                Refresh();
+            }
+        }
+
+        private float _zoomLevel = 1;
+        public float ZoomLevel
+        {
+            get { return _zoomLevel; }
+            set
+            {
+                _zoomLevel = value;
+                RefreshVisuals();
             }
         }
 
@@ -154,23 +152,15 @@ namespace Kalender.View.Controls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DayCalender_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
-        {
-            Children.Clear();
-            BuildCalender();
-        }
+        private void DayCalender_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)=>
+            RefreshVisuals();
 
         private void DayCalender_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             Year = CalendarData.SelectedDate.Year; Month = CalendarData.SelectedDate.Month; Day = CalendarData.SelectedDate.Day;
-            Children.Clear();
-            AppointmentBars.Clear();
-
-            BuildAppointments();
-            BuildCalender();
+            Refresh();
         }
 
-        private ObservableCollection<Appointment> _appointments = new ObservableCollection<Appointment>();
         public ObservableCollection<Appointment> Appointments { get => AppointmentData.Appointments; }
 
         private ObservableCollection<(AppointmentBar, Appointment)> _appointmentBars = new ObservableCollection<(AppointmentBar, Appointment)>();
@@ -197,7 +187,7 @@ namespace Kalender.View.Controls
         public void BuildCalender()
         {
             Children.Clear();
-            double hourWidth = 120;
+            double hourWidth = 120 * ZoomLevel;
             double appointmentHeight = 60;
             SetValue(WidthProperty, hourWidth * 25);
             TimeOnly currentTime = new TimeOnly(0,0);
@@ -263,6 +253,21 @@ namespace Kalender.View.Controls
                     handler(this, new PropertyChangedEventArgs(propName));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
             }
+        }
+
+        public void Refresh()
+        {
+            Children.Clear();
+            AppointmentBars.Clear();
+
+            BuildAppointments();
+            BuildCalender();
+        }
+
+        public void RefreshVisuals()
+        {
+            Children.Clear();
+            BuildCalender();
         }
     }
 }

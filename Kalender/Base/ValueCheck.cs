@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 
 namespace Kalender.Base
 {
+    /// <summary>
+    /// Klasse für die überprüfung von Werten und Sammlung von benötgiten Werten im Code
+    /// </summary>
     public class ValueCheck
     {
         public ValueCheck()
@@ -24,16 +27,24 @@ namespace Kalender.Base
 
         public ObservableCollection<int> DaysInMonth(int year, int month)
         {
-            if (month > 0 && month <= 12)
+            try
             {
-                ObservableCollection<int> result = new ObservableCollection<int>();
-                int count = DateTime.DaysInMonth(year, month);
-                for (int i = 1; i <= count; i++)
-                    result.Add(i);
-                return result;
+                if (month > 0 && month <= 12)
+                {
+                    ObservableCollection<int> result = new ObservableCollection<int>();
+                    int count = DateTime.DaysInMonth(year, month);
+                    for (int i = 1; i <= count; i++)
+                        result.Add(i);
+                    return result;
+                }
+                else
+                    return null;
             }
-            else
+            catch (Exception)
+            {
                 return null;
+            }
+            
         }
 
         public bool IsInt(string obj)

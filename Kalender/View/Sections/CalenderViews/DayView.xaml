@@ -10,7 +10,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <DockPanel>
         <DockPanel Height="30" DockPanel.Dock="Top">
             <TextBlock
@@ -44,9 +43,9 @@
             <ComboBox
                 Width="100"
                 Margin="3"
-                ItemsSource="{Binding DaysInYear, UpdateSourceTrigger=PropertyChanged}"
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Left"
+                ItemsSource="{Binding DaysInYear, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 Width="40"
@@ -65,11 +64,32 @@
                 DockPanel.Dock="Right"
                 Style="{DynamicResource ButtonStyle}" />
         </DockPanel>
-        <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Visible">
-            <controls:DayCalender
-                Day="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                Month="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                Year="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
-        </ScrollViewer>
+        <Grid DockPanel.Dock="Top">
+            <ScrollViewer VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Visible">
+                <controls:DayCalender
+                    x:Name="cal_day"
+                    Day="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    Month="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    Year="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
+            </ScrollViewer>
+            <TextBlock
+                Margin="0,0,20,30"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Text="{Binding ElementName=sld_Size, Path=Value}" />
+            <Slider
+                x:Name="sld_Size"
+                Width="100"
+                Margin="15"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                IsSnapToTickEnabled="True"
+                LargeChange="0.25"
+                Maximum="2"
+                Minimum="0.25"
+                SmallChange="0.25"
+                TickFrequency="0.25"
+                Value="{Binding ElementName=cal_day, Path=ZoomLevel, Mode=TwoWay}" />
+        </Grid>
     </DockPanel>
 </Page>

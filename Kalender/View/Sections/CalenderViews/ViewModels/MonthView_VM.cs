@@ -2,9 +2,6 @@
 using Kalender.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kalender.View.Sections.CalenderViews.ViewModels
 {
@@ -18,16 +15,35 @@ namespace Kalender.View.Sections.CalenderViews.ViewModels
         }
 
         private int _year = CalendarData.SelectedDate.Year;
-        public int Year { get => _year; set { _year = value; NotifyPropertyChanged(nameof(Year)); NotifyPropertyChanged(nameof(ShowedDate)); } }
+        public int Year 
+        { 
+            get => _year; 
+            set 
+            { 
+                DateTime dt = DateTime.Now;
+                if (DateTime.TryParse("01.01." + value.ToString(),out dt))
+                {
+                    _year = value;
+                    NotifyPropertyChanged(nameof(Year));
+                    NotifyPropertyChanged(nameof(ShowedDate));
+                }               
+            } 
+        }
 
         private int _month = CalendarData.SelectedDate.Month;
         public int Month { get => _month; set { _month = value; NotifyPropertyChanged(nameof(Month)); NotifyPropertyChanged(nameof(ShowedDate)); } }
 
+        /// <summary>
+        /// Das gezeigte Datum 
+        /// </summary>
         public DateTime ShowedDate 
         {   
             get { try { return new DateTime(Year, Month, 1); } catch { return DateTime.Now; } }
         }
 
+        /// <summary>
+        /// Monate für die ComboBox
+        /// </summary>
         public Dictionary<int, string> Months { get => _valueCheck.Months; }
 
         public CommandBase<object> NextMonthCom { get; set; }
@@ -39,6 +55,10 @@ namespace Kalender.View.Sections.CalenderViews.ViewModels
             PreviousMonthCom = new CommandBase<object>(PreviousMonth);
         }
 
+        /// <summary>
+        /// Setzt den nächsten Mpnat
+        /// </summary>
+        /// <param name="obj"></param>
         public void NextMonth(object obj)
         {
             if (Month == 12)
@@ -50,7 +70,10 @@ namespace Kalender.View.Sections.CalenderViews.ViewModels
                 Month++;
         }
 
-
+        /// <summary>
+        /// Setzt den vorherigen Monat
+        /// </summary>
+        /// <param name="obj"></param>
         public void PreviousMonth(object obj)
         {
             if (Month == 1)
@@ -60,7 +83,6 @@ namespace Kalender.View.Sections.CalenderViews.ViewModels
             }
             else
                 Month--;
-        }
-            
+        }            
     }
 }

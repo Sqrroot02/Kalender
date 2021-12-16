@@ -23,7 +23,6 @@
                 Margin="3"
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Left"
-                PreviewKeyDown="txb_YearInput_PreviewKeyDown"
                 Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock
@@ -38,13 +37,13 @@
                 DisplayMemberPath="Value"
                 DockPanel.Dock="Left"
                 ItemsSource="{Binding Months}"
-                PreviewKeyDown="txb_MonthInput_PreviewKeyDown"
                 SelectedValue="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedValuePath="Key" />
             <TextBlock
                 Margin="10,2,2,10"
                 HorizontalAlignment="Center"
                 FontSize="15"
+                Foreground="#FF373737"
                 FontWeight="Bold"
                 Text="{Binding ShowedDate, StringFormat='{}{0:yyyy MMMM}', NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
             <Button

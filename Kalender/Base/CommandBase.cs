@@ -5,6 +5,7 @@ namespace Kalender.Base
 {
     /// <summary>
     /// Für die Abarbeitung von Ereignissen im ViewModel einer View
+    /// Kann ignoriert werden...
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class CommandBase<T> : ICommand

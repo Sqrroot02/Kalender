@@ -12,14 +12,22 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:BoolReverseVisibilityConverter x:Key="boolVisConv"/>
+        <Color x:Key="Highlighted" A="250" R="255" G="255" B="255" />
+        <Color x:Key="Normal" A="140" B="255" R="255" G="255"/>
     </UserControl.Resources>
     <Border
         x:Name="brd_WeekDateBorder"
         Margin="1"
-        Background="White"
-        BorderBrush="Gray"
+        BorderBrush="Transparent"
         BorderThickness="2,2,2,2"
-        CornerRadius="2">
+        CornerRadius="5">
+        <Border.Background>
+            <SolidColorBrush>
+                <SolidColorBrush.Color>
+                    <Color A="140" B="255" R="255" G="255"/>
+                </SolidColorBrush.Color>
+            </SolidColorBrush>
+        </Border.Background>
         <Border.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
                 <BeginStoryboard>
@@ -27,8 +35,8 @@
                         <ColorAnimation
                             Storyboard.TargetName="brd_WeekDateBorder"
                             Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                            From="White"
-                            To="LightGray"
+                            From="{StaticResource Normal}"
+                            To="{StaticResource Highlighted}"
                             Duration="00:00:0.1" />
                     </Storyboard>
                 </BeginStoryboard>
@@ -39,8 +47,8 @@
                         <ColorAnimation
                             Storyboard.TargetName="brd_WeekDateBorder"
                             Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                            From="LightGray"
-                            To="White"
+                            From="{StaticResource Highlighted}"
+                            To="{StaticResource Normal}"
                             Duration="00:00:0.1" />
                     </Storyboard>
                 </BeginStoryboard>
@@ -56,6 +64,7 @@
                 Visibility="{Binding IsTodayVisible}" />
             <!--  Anzeige des Monatsindexes  -->
             <TextBlock
+                Foreground="#FF373737"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 DockPanel.Dock="Top"

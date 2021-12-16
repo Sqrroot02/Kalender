@@ -22,7 +22,7 @@ namespace Kalender.Data
         /// !!! Geht normalerweise auch bei ObservalCollection mit "OnCollectionChanged". Hat aber bei
         /// der DayView nicht funktioniert, deshalb diese unschöne Lösung !!!
         /// </summary>
-        public static event EventHandler<object>? OnAppointmentsChanged;
+        public static event EventHandler? OnAppointmentsChanged;
         /// <summary>
         /// Event für die Veränderung der Terminzeiten
         /// </summary>
@@ -43,7 +43,7 @@ namespace Kalender.Data
         public static Appointment SelectedAppointment
         {
             get => _selectedAppointment;
-            set { _selectedAppointment = value; OnSelectedAppointmentChanged?.Invoke(value, value); _selectedAppointment.OnTimesChanged += _selectedAppointment_OnTimesChanged; }
+            set { _selectedAppointment = value; OnSelectedAppointmentChanged?.Invoke(value, value); if (_selectedAppointment != null) { _selectedAppointment.OnTimesChanged += _selectedAppointment_OnTimesChanged; } }
         }
 
         private static void _selectedAppointment_OnTimesChanged(object? sender, EventArgs e) =>

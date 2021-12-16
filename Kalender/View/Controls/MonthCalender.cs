@@ -59,8 +59,13 @@ namespace Kalender.View.Controls
         {            
             if (Year != 0 && Month != 0)
             {
-                AppointmentData.Appointments = new ObservableCollection<Appointment>(_appointmentData.GetAppointmentsByDate(Year, Month));  
-                CalendarData.SelectedDate = new DateTime(Year, Month, CalendarData.SelectedDate.Day);
+                AppointmentData.Appointments = new ObservableCollection<Appointment>(_appointmentData.GetAppointmentsByDate(Year, Month));
+                try
+                {
+                    CalendarData.SelectedDate = new DateTime(Year, Month, CalendarData.SelectedDate.Day);
+                }
+                catch { CalendarData.SelectedDate = DateTime.Now; }
+                                             
                 Children.Clear();
                 
                 BuildWeeks();
@@ -193,7 +198,7 @@ namespace Kalender.View.Controls
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
-            textBlock.Foreground = Brushes.Black;
+            textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF373737"));
             textBlock.FontSize = 14;
             textBlock.FontWeight = FontWeights.Bold;
             textBlock.TextTrimming = TextTrimming.CharacterEllipsis;

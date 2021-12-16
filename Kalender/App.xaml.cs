@@ -14,6 +14,7 @@ namespace Kalender
             Exit += App_Exit;
 
             // Initialisiert Connection Data für die Datenbank
+            // ! Hier eigene Conncetion Daten eintragen !
             DatabaseConnection.Host = "localhost";
             DatabaseConnection.Database = "calendar";
             DatabaseConnection.UserName = "root";
@@ -26,9 +27,8 @@ namespace Kalender
             DatabaseConnection.Connect();
         }
 
-        private void App_Exit(object sender, ExitEventArgs e)
-        {
+        // Beim schließen der Anwendung wird die Verbindung zur DB ebenfalls getrennt
+        private void App_Exit(object sender, ExitEventArgs e) =>
             DatabaseConnection.Disconnect();
-        }
     }
 }

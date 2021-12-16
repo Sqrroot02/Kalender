@@ -40,7 +40,7 @@ namespace Kalender.View.Controls
             if (e.Month == CurrentDate.Month && e.Day == CurrentDate.Day && e.Year == CurrentDate.Year)
                 brd_WeekDateBorder.BorderBrush = new SolidColorBrush(new Color() { A = 255, R = 87, B = 255, G = 151 });
             else
-                brd_WeekDateBorder.BorderBrush = Brushes.Gray;
+                brd_WeekDateBorder.BorderBrush = Brushes.Transparent;
         }
 
         private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)

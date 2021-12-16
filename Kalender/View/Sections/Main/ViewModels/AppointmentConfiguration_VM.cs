@@ -2,11 +2,8 @@
 using Kalender.Data;
 using Kalender.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Kalender.View.Sections.Main.ViewModels
@@ -16,8 +13,10 @@ namespace Kalender.View.Sections.Main.ViewModels
     /// </summary>
     public class AppointmentConfiguration_VM : ViewModelBase
     {
+        #region Variablen
         private readonly AppointmentData _appointmentData = new AppointmentData();
-        private readonly CalendarData _calendarData = new CalendarData();   
+        #endregion
+
         public AppointmentConfiguration_VM()
         {
             AppointmentData.OnSelectedAppointmentChanged += AppointmentData_OnSelectedAppointmentChanged;
@@ -25,10 +24,9 @@ namespace Kalender.View.Sections.Main.ViewModels
             InitCommand();
         }
 
-        private void CalendarData_SelectedDateChanged(object? sender, DateTime e)
-        {
+        #region Event Methoden
+        private void CalendarData_SelectedDateChanged(object? sender, DateTime e) =>
             NotifyPropertyChanged(nameof(DayAppointments));            
-        }
 
         private void AppointmentData_OnSelectedAppointmentChanged(object? sender, Appointment e)        
         {
@@ -38,7 +36,7 @@ namespace Kalender.View.Sections.Main.ViewModels
             else
                 AppointmentOptionVisibility = Visibility.Collapsed;
         }
-            
+        #endregion
 
         public override void InitCommand()
         {
@@ -47,6 +45,7 @@ namespace Kalender.View.Sections.Main.ViewModels
             DeleteCommand = new CommandBase<object>(DeleteAppointment);
         }
 
+        #region Eigenschaften
         /// <summary>
         /// Der derzeitig Ausgweählte Termin
         /// </summary>
@@ -64,13 +63,23 @@ namespace Kalender.View.Sections.Main.ViewModels
         public CommandBase<object> ApplyCommand { get; set; }
         public CommandBase<object> AddCommand { get; set; }
 
-        private DateTime _currentDate = DateTime.Now;
+        /// <summary>
+        /// Das derzeitig ausgewählte Datum
+        /// </summary>
         public DateTime CurrentDate { get => CalendarData.SelectedDate; }
 
+        /// <summary>
+        /// Liste aller Kalender
+        /// </summary>
         public ObservableCollection<Calendar> Calendars { get => CalendarData.Calendars; }
 
+        /// <summary>
+        /// Der derzeitige ausgewählte Kalender
+        /// </summary>
         public Calendar SelectedCalender { get => CalendarData.SelectedCalender; set => CalendarData.SelectedCalender = value;}
 
+        #endregion
+        #region Methoden
         /// <summary>
         /// Fügt einen neuen Termin hinzu
         /// </summary>
@@ -117,5 +126,6 @@ namespace Kalender.View.Sections.Main.ViewModels
 
             NotifyPropertyChanged(nameof(DayAppointments));
         }
+        #endregion
     }
 }

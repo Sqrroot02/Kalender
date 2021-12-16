@@ -102,7 +102,7 @@ namespace Kalender.Model
             get { return _hourStart; } 
             set 
             {
-                if (value < 23 && value >= 0)
+                if (value <= 23 && value >= 0)
                     _hourStart = value;
                 else if (value < 0)
                     _hourStart = 0;
@@ -166,7 +166,7 @@ namespace Kalender.Model
             get { return _hourEnd; } 
             set 
             {
-                if (value < 23 && value >= 0)
+                if (value <= 23 && value >= 0)
                     _hourEnd = value;
                 else if (value < 0)
                     _hourEnd = 23;
@@ -243,7 +243,7 @@ namespace Kalender.Model
             get 
             {
                 var calender = CalendarData.Calendars.Where(x => x.CalendarId == CalenderId).FirstOrDefault();
-                return calender == null ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(calender.Color);
+                return calender == null ? new SolidColorBrush(Colors.SlateGray) : new SolidColorBrush(calender.Color);
             }
         }
         

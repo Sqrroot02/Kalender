@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Kalender.Data
@@ -33,7 +31,8 @@ namespace Kalender.Data
         public static DateTime SelectedDate 
         { 
             get => _selectedDate;
-            set { _selectedDate = value; SelectedDateChanged?.Invoke(value,value);GC.Collect(); GC.WaitForPendingFinalizers();GC.Collect(); }
+            set 
+            { _selectedDate = value; SelectedDateChanged?.Invoke(value,value);GC.Collect(); GC.WaitForPendingFinalizers();GC.Collect(); }
         }
 
         private static ObservableCollection<Calendar> _calendars = new ObservableCollection<Calendar>();
