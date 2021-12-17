@@ -32,7 +32,7 @@ namespace Kalender.Data
         { 
             get => _selectedDate;
             set 
-            { _selectedDate = value; SelectedDateChanged?.Invoke(value,value);GC.Collect(); GC.WaitForPendingFinalizers();GC.Collect(); }
+            { _selectedDate = value; SelectedDateChanged?.Invoke(value,value); }
         }
 
         private static ObservableCollection<Calendar> _calendars = new ObservableCollection<Calendar>();
